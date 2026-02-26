@@ -70,19 +70,20 @@ COUNTRY_LABEL_MAP = {
 }
 
 
-def _compute_ski_region(country: str | None, region: str | None) -> str | None:
+def _compute_ski_region(country: str | None, region: str | None, subregion: str | None = None) -> str | None:
     if not country:
         return None
     if country == "US":
-        return US_SKI_REGION_MAP.get(region) if region else None
+        # subregion holds the state name (e.g. "Colorado", "Utah")
+        return US_SKI_REGION_MAP.get(subregion) if subregion else None
     if country == "CA":
-        return CA_SKI_REGION_MAP.get(region) if region else None
+        # subregion holds the province name (e.g. "British Columbia", "Alberta")
+        return CA_SKI_REGION_MAP.get(subregion) if subregion else None
     if country == "JP":
+        # region holds the prefecture (e.g. "Hokkaido", "Nagano", "Niigata")
         if region == "Hokkaido":
             return "Hokkaido"
-        if region in ("Nagano", "Niigata", "Tohoku"):
-            return "Honshu"
-        return "Honshu"  # fallback for other JP regions
+        return "Honshu"  # all other JP prefectures
     if country in ("AR", "CL"):
         return "Andes"
     if country == "AU":
@@ -192,14 +193,14 @@ async def set_hierarchy(x_admin_key: str = Header(...)):
 
     async with AsyncSessionLocal() as db:
         result = await db.execute(
-            select(Resort.id, Resort.country, Resort.region)
+            select(Resort.id, Resort.country, Resort.region, Resort.subregion)
         )
         rows = result.all()
 
     updates = []
-    for resort_id, country, region in rows:
+    for resort_id, country, region, subregion in rows:
         continent = CONTINENT_MAP.get(country) if country else None
-        ski_region = _compute_ski_region(country, region)
+        ski_region = _compute_ski_region(country, region, subregion)
         updates.append({"id": resort_id, "continent": continent, "ski_region": ski_region})
 
     async with AsyncSessionLocal() as db:
