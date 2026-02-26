@@ -77,7 +77,7 @@ async def get_rankings(
     min_elevation_m: Optional[int] = Query(None),
     sort: str = Query("score", pattern="^(score|predicted_snow)$"),
     page: int = Query(1, ge=1),
-    per_page: int = Query(50, ge=1, le=100),
+    per_page: int = Query(50, ge=1, le=300),
     w_base_depth: Optional[float] = Query(None, ge=0.0, le=1.0),
     w_fresh_snow: Optional[float] = Query(None, ge=0.0, le=1.0),
     w_temperature: Optional[float] = Query(None, ge=0.0, le=1.0),
