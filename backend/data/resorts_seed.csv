@@ -1,0 +1,11 @@
+name,slug,country,region,subregion,latitude,longitude,elevation_base_m,elevation_summit_m,aspect,vertical_drop_m,num_runs,season_start_month,season_end_month,timezone,website_url
+Whistler Blackcomb,whistler-blackcomb,CA,North America,British Columbia,50.1163,-122.9574,675,2182,N,1530,200,11,5,America/Vancouver,https://www.whistlerblackcomb.com
+Vail Mountain,vail,US,North America,Colorado,39.6433,-106.3781,2457,3527,N,1087,195,11,4,America/Denver,https://www.vail.com
+Chamonix Mont-Blanc,chamonix,FR,Alps,French Alps,45.9237,6.8694,1035,3842,NW,2807,170,12,4,Europe/Paris,https://www.chamonix.com
+Niseko Grand Hirafu,niseko-grand-hirafu,JP,Japan,Hokkaido,42.8281,140.6994,300,1308,N,1008,30,12,3,Asia/Tokyo,https://www.niseko.ne.jp
+Zermatt,zermatt,CH,Alps,Swiss Alps,46.0207,7.7491,1620,3883,NE,2212,360,11,5,Europe/Zurich,https://www.zermatt.ch
+Verbier,verbier,CH,Alps,Swiss Alps,46.0960,7.2283,1500,3330,S,1500,412,11,4,Europe/Zurich,https://www.verbier.ch
+Val d'Isere,val-disere,FR,Alps,French Alps,45.4484,6.9800,1850,3300,N,1000,300,11,5,Europe/Paris,https://www.valdisere.com
+Aspen Snowmass,aspen-snowmass,US,North America,Colorado,39.2084,-106.9491,2422,3813,N,1391,337,11,4,America/Denver,https://www.aspensnowmass.com
+Park City Mountain,park-city,US,North America,Utah,40.6514,-111.5080,2103,3048,N,945,330,11,4,America/Denver,https://www.parkcitymountain.com
+Courchevel,courchevel,FR,Alps,French Alps,45.4174,6.6344,1850,2738,N,888,150,12,4,Europe/Paris,https://www.courchevel.com

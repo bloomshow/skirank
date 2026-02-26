@@ -13,7 +13,7 @@ from backend.models.resort import Resort
 router = APIRouter(prefix="/admin", tags=["admin"])
 
 ADMIN_KEY = "skirank-admin-2026"
-DATA_CSV = Path(__file__).parent.parent.parent / "data" / "resorts_200.csv"
+DATA_CSV = Path(__file__).parent.parent.parent / "data" / "resorts_seed.csv"
 
 
 def _require_key(x_admin_key: str = Header(...)):
