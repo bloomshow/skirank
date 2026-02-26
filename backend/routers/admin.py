@@ -1,10 +1,11 @@
 from __future__ import annotations
 
+import asyncio
 import csv
 import uuid
 from pathlib import Path
 
-from fastapi import APIRouter, Header, HTTPException
+from fastapi import APIRouter, BackgroundTasks, Header, HTTPException
 from sqlalchemy.dialects.postgresql import insert as pg_insert
 
 from backend.db import init_db, AsyncSessionLocal
@@ -87,3 +88,11 @@ async def run_seed(x_admin_key: str = Header(...)):
         await db.commit()
 
     return {"status": "ok", "message": f"Upserted {len(batch)} resorts"}
+
+
+@router.post("/run-pipeline")
+async def trigger_pipeline(background_tasks: BackgroundTasks, x_admin_key: str = Header(...)):
+    _require_key(x_admin_key)
+    from pipeline.scheduler import run_pipeline
+    background_tasks.add_task(run_pipeline)
+    return {"status": "ok", "message": "Pipeline started in background — check Railway logs for progress"}

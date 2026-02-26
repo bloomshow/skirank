@@ -6,6 +6,8 @@ load_dotenv()
 DATABASE_URL: str = os.environ.get(
     "DATABASE_URL", "postgresql+asyncpg://skirank:skirank_dev@localhost:5432/skirank"
 )
+if DATABASE_URL.startswith("postgresql://"):
+    DATABASE_URL = DATABASE_URL.replace("postgresql://", "postgresql+asyncpg://", 1)
 REDIS_URL: str = os.environ.get("REDIS_URL", "redis://localhost:6379/0")
 
 OPEN_METEO_BASE_URL: str = os.environ.get(
