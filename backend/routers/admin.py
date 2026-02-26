@@ -6,6 +6,7 @@ import uuid
 from pathlib import Path
 
 from fastapi import APIRouter, BackgroundTasks, Header, HTTPException
+from sqlalchemy import select, update
 from sqlalchemy.dialects.postgresql import insert as pg_insert
 
 from backend.db import init_db, AsyncSessionLocal
@@ -15,6 +16,80 @@ router = APIRouter(prefix="/admin", tags=["admin"])
 
 ADMIN_KEY = "skirank-admin-2026"
 DATA_CSV = Path(__file__).parent.parent.parent / "data" / "resorts_200.csv"
+
+# ---------------------------------------------------------------------------
+# Hierarchy mapping tables
+# ---------------------------------------------------------------------------
+CONTINENT_MAP = {
+    "US": "North America", "CA": "North America",
+    "FR": "Europe", "AT": "Europe", "CH": "Europe", "IT": "Europe",
+    "DE": "Europe", "NO": "Europe", "SE": "Europe", "FI": "Europe",
+    "ES": "Europe", "AD": "Europe", "SK": "Europe", "SI": "Europe",
+    "BG": "Europe", "RO": "Europe", "GB": "Europe",
+    "JP": "Asia", "KR": "Asia",
+    "AR": "South America", "CL": "South America",
+    "AU": "Oceania", "NZ": "Oceania",
+}
+
+US_SKI_REGION_MAP = {
+    "Colorado": "Colorado", "Utah": "Utah",
+    "California": "California", "Nevada": "California",
+    "Washington": "Pacific Northwest", "Oregon": "Pacific Northwest",
+    "Montana": "Mountain West", "Wyoming": "Mountain West", "Idaho": "Mountain West",
+    "Vermont": "Northeast USA", "New Hampshire": "Northeast USA",
+    "New York": "Northeast USA", "Maine": "Northeast USA",
+}
+
+CA_SKI_REGION_MAP = {
+    "British Columbia": "British Columbia", "Alberta": "Alberta",
+    "Quebec": "Eastern Canada", "Ontario": "Eastern Canada",
+    "Newfoundland": "Eastern Canada",
+}
+
+COUNTRY_SKI_REGION_MAP = {
+    "FR": "French Alps", "CH": "Swiss Alps", "AT": "Austrian Alps",
+    "IT": "Italian Alps", "NO": "Scandinavia", "SE": "Scandinavia",
+    "FI": "Scandinavia", "ES": "Pyrenees & Iberia", "AD": "Pyrenees & Iberia",
+}
+
+AR_REGION_MAP = {"Andes": "Andes"}
+CL_REGION_MAP = {"Andes": "Andes"}
+AU_SKI_REGION = "Australian Alps"
+NZ_SKI_REGION = "Southern Alps"
+
+# Japan: Hokkaido → Hokkaido, others → Honshu
+JP_REGION_MAP = {"Hokkaido": "Hokkaido"}
+
+COUNTRY_LABEL_MAP = {
+    "US": "United States", "CA": "Canada", "FR": "France", "AT": "Austria",
+    "CH": "Switzerland", "IT": "Italy", "DE": "Germany", "NO": "Norway",
+    "SE": "Sweden", "FI": "Finland", "ES": "Spain", "AD": "Andorra",
+    "SK": "Slovakia", "SI": "Slovenia", "BG": "Bulgaria", "RO": "Romania",
+    "GB": "Great Britain", "JP": "Japan", "KR": "South Korea",
+    "AR": "Argentina", "CL": "Chile", "AU": "Australia", "NZ": "New Zealand",
+}
+
+
+def _compute_ski_region(country: str | None, region: str | None) -> str | None:
+    if not country:
+        return None
+    if country == "US":
+        return US_SKI_REGION_MAP.get(region) if region else None
+    if country == "CA":
+        return CA_SKI_REGION_MAP.get(region) if region else None
+    if country == "JP":
+        if region == "Hokkaido":
+            return "Hokkaido"
+        if region in ("Nagano", "Niigata", "Tohoku"):
+            return "Honshu"
+        return "Honshu"  # fallback for other JP regions
+    if country in ("AR", "CL"):
+        return "Andes"
+    if country == "AU":
+        return AU_SKI_REGION
+    if country == "NZ":
+        return NZ_SKI_REGION
+    return COUNTRY_SKI_REGION_MAP.get(country)
 
 
 def _require_key(x_admin_key: str = Header(...)):
@@ -96,3 +171,35 @@ async def trigger_pipeline(background_tasks: BackgroundTasks, x_admin_key: str =
     from pipeline.scheduler import run_pipeline
     background_tasks.add_task(run_pipeline)
     return {"status": "ok", "message": "Pipeline started in background — check Railway logs for progress"}
+
+
+@router.post("/set-hierarchy")
+async def set_hierarchy(x_admin_key: str = Header(...)):
+    _require_key(x_admin_key)
+
+    async with AsyncSessionLocal() as db:
+        result = await db.execute(
+            select(Resort.id, Resort.country, Resort.region)
+        )
+        rows = result.all()
+
+    updates = []
+    for resort_id, country, region in rows:
+        continent = CONTINENT_MAP.get(country) if country else None
+        ski_region = _compute_ski_region(country, region)
+        updates.append({"id": resort_id, "continent": continent, "ski_region": ski_region})
+
+    async with AsyncSessionLocal() as db:
+        for u in updates:
+            await db.execute(
+                update(Resort)
+                .where(Resort.id == u["id"])
+                .values(continent=u["continent"], ski_region=u["ski_region"])
+            )
+        await db.commit()
+
+    assigned = sum(1 for u in updates if u["continent"] is not None)
+    return {
+        "status": "ok",
+        "message": f"Set hierarchy for {assigned}/{len(updates)} resorts",
+    }

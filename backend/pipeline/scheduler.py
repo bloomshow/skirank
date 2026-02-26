@@ -83,6 +83,7 @@ async def run_pipeline() -> None:
         slug = resort.get("slug")
         if slug and slug in station_readings:
             weather.snow_depth_cm = station_readings[slug].snow_depth_cm
+            weather.depth_source = "synoptic_station"
             logger.info(
                 "Station override for %s: %.1f cm (stid=%s, date=%s)",
                 slug,

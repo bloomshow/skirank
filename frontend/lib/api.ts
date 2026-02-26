@@ -4,6 +4,7 @@ import type {
   Resort,
   ResortDetail,
   RegionEntry,
+  HierarchyResponse,
   ForecastDay,
 } from "./types";
 
@@ -37,13 +38,13 @@ export async function fetchRankings(
   page = 1,
   per_page = 50
 ): Promise<RankingsResponse> {
-  const { horizon_days, region, subregion, country, min_elevation_m, weights, sort } = filters;
+  const { horizon_days, region, subregion, continent, ski_region, country, min_elevation_m, weights, sort } = filters;
   const params: Record<string, string | number | undefined> = {
     horizon_days,
     page,
     per_page,
     ...(sort && { sort }),
-    ...(country && { country }),
+    ...(continent && { continent }),
     ...(min_elevation_m !== undefined && { min_elevation_m }),
     ...weights,
   };
@@ -53,6 +54,8 @@ export async function fetchRankings(
   });
   region?.forEach((r) => url.searchParams.append("region", r));
   subregion?.forEach((s) => url.searchParams.append("subregion", s));
+  ski_region?.forEach((s) => url.searchParams.append("ski_region", s));
+  country?.forEach((c) => url.searchParams.append("country", c));
   const res = await fetch(url.toString(), { next: { revalidate: 3600 } });
   if (!res.ok) throw new Error(`API error ${res.status}: ${url.pathname}`);
   return res.json() as Promise<RankingsResponse>;
@@ -76,6 +79,10 @@ export async function fetchResortForecast(slug: string): Promise<ForecastDay[]> 
 
 export async function fetchRegions(): Promise<RegionEntry[]> {
   return apiFetch<RegionEntry[]>("/regions");
+}
+
+export async function fetchHierarchy(): Promise<HierarchyResponse> {
+  return apiFetch<HierarchyResponse>("/regions");
 }
 
 export async function fetchRankingsMap(horizon_days = 0): Promise<

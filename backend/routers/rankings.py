@@ -43,12 +43,36 @@ def _recompute_score(score: ResortScore, weights: dict[str, float]) -> float:
     return round(total, 1)
 
 
+SLUG_TO_CONTINENT = {
+    "north-america": "North America",
+    "europe": "Europe",
+    "asia": "Asia",
+    "south-america": "South America",
+    "oceania": "Oceania",
+}
+
+SLUG_TO_SKI_REGION = {
+    "colorado": "Colorado", "utah": "Utah", "california": "California",
+    "pacific-northwest": "Pacific Northwest", "mountain-west": "Mountain West",
+    "northeast-usa": "Northeast USA", "british-columbia": "British Columbia",
+    "alberta": "Alberta", "eastern-canada": "Eastern Canada",
+    "french-alps": "French Alps", "swiss-alps": "Swiss Alps",
+    "austrian-alps": "Austrian Alps", "italian-alps": "Italian Alps",
+    "scandinavia": "Scandinavia", "pyrenees-and-iberia": "Pyrenees & Iberia",
+    "hokkaido": "Hokkaido", "honshu": "Honshu",
+    "andes": "Andes", "australian-alps": "Australian Alps",
+    "southern-alps": "Southern Alps",
+}
+
+
 @router.get("", response_model=RankingsResponse)
 async def get_rankings(
     horizon_days: int = Query(0, ge=0, le=14),
     region: List[str] = Query(default=[]),
     subregion: List[str] = Query(default=[]),
-    country: Optional[str] = Query(None),
+    country: List[str] = Query(default=[]),
+    continent: Optional[str] = Query(None),
+    ski_region: List[str] = Query(default=[]),
     min_elevation_m: Optional[int] = Query(None),
     sort: str = Query("score", pattern="^(score|predicted_snow)$"),
     page: int = Query(1, ge=1),
@@ -60,13 +84,14 @@ async def get_rankings(
     db: AsyncSession = Depends(get_db),
 ):
     custom_weights = any(w is not None for w in [w_base_depth, w_fresh_snow, w_temperature, w_wind])
+    has_hierarchy_filters = bool(continent or ski_region or country)
 
     # Only use cache for default weights, no filters, default sort
     use_cache = (
         not custom_weights
         and not region
         and not subregion
-        and not country
+        and not has_hierarchy_filters
         and not min_elevation_m
         and sort == "score"
     )
@@ -111,6 +136,21 @@ async def get_rankings(
         .subquery()
     )
 
+    # Subquery: forecast_source — 'nws_hrrr' if any upcoming forecast has that source, else 'open_meteo'
+    # func.min() returns 'nws_hrrr' if present ('n' < 'o' alphabetically)
+    forecast_src_subq = (
+        select(
+            ForecastSnapshot.resort_id,
+            func.min(ForecastSnapshot.source).label("forecast_source"),
+        )
+        .where(
+            ForecastSnapshot.forecast_date >= today,
+            ForecastSnapshot.forecast_date < seven_days,
+        )
+        .group_by(ForecastSnapshot.resort_id)
+        .subquery()
+    )
+
     # Get latest scores for the given horizon
     subq = (
         select(
@@ -133,7 +173,13 @@ async def get_rankings(
     )
 
     stmt = (
-        select(Resort, ResortScore, WeatherSnapshot, snow_subq.c.predicted_snow_cm)
+        select(
+            Resort,
+            ResortScore,
+            WeatherSnapshot,
+            snow_subq.c.predicted_snow_cm,
+            forecast_src_subq.c.forecast_source,
+        )
         .join(subq, Resort.id == subq.c.resort_id)
         .join(
             ResortScore,
@@ -152,14 +198,22 @@ async def get_rankings(
             ),
         )
         .outerjoin(snow_subq, snow_subq.c.resort_id == Resort.id)
+        .outerjoin(forecast_src_subq, forecast_src_subq.c.resort_id == Resort.id)
     )
 
     if region:
         stmt = stmt.where(Resort.region.in_(region))
     if subregion:
         stmt = stmt.where(Resort.subregion.in_(subregion))
+    if continent:
+        cont_label = SLUG_TO_CONTINENT.get(continent)
+        if cont_label:
+            stmt = stmt.where(Resort.continent == cont_label)
+    if ski_region:
+        sr_labels = [SLUG_TO_SKI_REGION.get(s, s) for s in ski_region]
+        stmt = stmt.where(Resort.ski_region.in_(sr_labels))
     if country:
-        stmt = stmt.where(Resort.country == country.upper())
+        stmt = stmt.where(Resort.country.in_([c.upper() for c in country]))
     if min_elevation_m:
         stmt = stmt.where(Resort.elevation_summit_m >= min_elevation_m)
 
@@ -207,7 +261,10 @@ async def get_rankings(
 
     results = []
     for rank_offset, row in enumerate(rows, start=(page - 1) * per_page + 1):
-        resort, score, snapshot, predicted_snow_cm = row[0], row[1], row[2], row[3]
+        resort, score, snapshot, predicted_snow_cm, forecast_source = (
+            row[0], row[1], row[2], row[3], row[4]
+        )
+        depth_source = snapshot.source if snapshot else None
         computed_score = _recompute_score(score, weights) if custom_weights else (
             float(score.score_total) if score.score_total else None
         )
@@ -234,6 +291,8 @@ async def get_rankings(
                 stale_data=stale,
                 predicted_snow_cm=float(predicted_snow_cm) if predicted_snow_cm is not None else None,
                 forecast_sparkline=sparklines.get(resort.id, []),
+                forecast_source=forecast_source,
+                depth_source=depth_source,
             )
         )
 

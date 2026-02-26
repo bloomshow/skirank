@@ -68,7 +68,7 @@ interface ResortCardProps {
 }
 
 export default function ResortCard({ entry }: ResortCardProps) {
-  const { rank, resort, score, sub_scores, snapshot, stale_data, predicted_snow_cm, forecast_sparkline } = entry;
+  const { rank, resort, score, sub_scores, snapshot, stale_data, predicted_snow_cm, forecast_sparkline, forecast_source, depth_source } = entry;
   const flag = resort.country ? (COUNTRY_FLAGS[resort.country] ?? resort.country) : "";
 
   return (
@@ -112,6 +112,18 @@ export default function ResortCard({ entry }: ResortCardProps) {
               {snapshot.snow_depth_cm !== null && snapshot.snow_depth_cm < 20 && (
                 <span className="bg-amber-100 text-amber-700 px-1.5 py-0.5 rounded text-xs">thin cover</span>
               )}
+              {depth_source && (
+                <span
+                  title={depth_source === "synoptic_station" ? "Snow depth from on-mountain station" : "Snow depth estimated from weather model"}
+                  className={`hidden sm:inline px-1.5 py-0.5 rounded text-xs font-medium ${
+                    depth_source === "synoptic_station"
+                      ? "bg-green-100 text-green-700"
+                      : "bg-slate-100 text-slate-500"
+                  }`}
+                >
+                  {depth_source === "synoptic_station" ? "Station" : "Estimated"}
+                </span>
+              )}
             </span>
             <span>
               <span className="text-slate-400">New 72h</span>{" "}
@@ -126,9 +138,21 @@ export default function ResortCard({ entry }: ResortCardProps) {
               {snapshot.wind_speed_kmh !== null ? `${snapshot.wind_speed_kmh}km/h` : "—"}
             </span>
             {predicted_snow_cm !== null && (
-              <span>
+              <span className="flex items-center gap-1">
                 <span className="text-slate-400">7d snow</span>{" "}
                 {Math.round(predicted_snow_cm)}cm
+                {forecast_source && (
+                  <span
+                    title={forecast_source === "nws_hrrr" ? "Forecast from NWS HRRR high-resolution model (3km)" : "Forecast from Open-Meteo global ensemble model"}
+                    className={`hidden sm:inline px-1.5 py-0.5 rounded text-xs font-medium ${
+                      forecast_source === "nws_hrrr"
+                        ? "bg-green-100 text-green-700"
+                        : "bg-slate-100 text-slate-500"
+                    }`}
+                  >
+                    {forecast_source === "nws_hrrr" ? "High-res" : "Global model"}
+                  </span>
+                )}
               </span>
             )}
           </div>

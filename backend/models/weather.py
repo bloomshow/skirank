@@ -42,3 +42,4 @@ class ForecastSnapshot(Base):
     precipitation_prob_pct: Mapped[Optional[int]] = mapped_column(Integer)
     weather_code: Mapped[Optional[int]] = mapped_column(Integer)
     confidence_score: Mapped[Optional[float]] = mapped_column(Numeric(4, 3))
+    source: Mapped[Optional[str]] = mapped_column(String(50))  # 'open_meteo' | 'nws_hrrr'

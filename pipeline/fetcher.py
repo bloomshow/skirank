@@ -57,6 +57,7 @@ class ResortWeatherData:
     temperature_c: float | None = None
     wind_speed_kmh: float | None = None
     weather_code: int | None = None
+    depth_source: str = "open_meteo"
     # 16-day forecasts
     forecasts: list[ForecastDay] = field(default_factory=list)
 
@@ -71,6 +72,7 @@ class ForecastDay:
     precipitation_prob_pct: int | None
     weather_code: int | None
     confidence_score: float
+    source: str = "open_meteo"
 
 
 async def _fetch_with_retry(
@@ -442,6 +444,7 @@ async def fetch_all_resorts(
                 for fc in weather.forecasts:
                     if fc.forecast_date in daily_snow:
                         fc.snowfall_cm = daily_snow[fc.forecast_date]
+                        fc.source = "nws_hrrr"
                 applied += 1
             logger.info(
                 "Applied NWS snowfall to %d/%d US resorts",

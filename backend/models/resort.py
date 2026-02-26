@@ -16,6 +16,8 @@ class Resort(Base):
     country: Mapped[Optional[str]] = mapped_column(String(100))
     region: Mapped[Optional[str]] = mapped_column(String(100))
     subregion: Mapped[Optional[str]] = mapped_column(String(100))
+    continent: Mapped[Optional[str]] = mapped_column(String(50))   # 'North America'|'Europe'|'Asia'|etc.
+    ski_region: Mapped[Optional[str]] = mapped_column(String(100)) # 'Colorado'|'French Alps'|etc.
     latitude: Mapped[float] = mapped_column(Numeric(9, 6), nullable=False)
     longitude: Mapped[float] = mapped_column(Numeric(9, 6), nullable=False)
     elevation_base_m: Mapped[Optional[int]] = mapped_column(Integer)

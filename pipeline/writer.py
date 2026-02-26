@@ -61,7 +61,7 @@ async def write_weather_snapshots(
                 temperature_c=data.temperature_c,
                 wind_speed_kmh=data.wind_speed_kmh,
                 weather_code=data.weather_code,
-                source="open_meteo",
+                source=data.depth_source,
             )
             session.add(snapshot)
 
@@ -83,6 +83,7 @@ async def write_weather_snapshots(
                     precipitation_prob_pct=fc.precipitation_prob_pct,
                     weather_code=fc.weather_code,
                     confidence_score=fc.confidence_score,
+                    source=fc.source,
                 )
                 session.add(forecast)
 

@@ -12,6 +12,8 @@ class ResortBase(BaseModel):
     country: Optional[str]
     region: Optional[str]
     subregion: Optional[str]
+    continent: Optional[str] = None
+    ski_region: Optional[str] = None
     latitude: float
     longitude: float
     elevation_base_m: Optional[int]
@@ -54,6 +56,8 @@ class RankingEntry(BaseModel):
     stale_data: bool = False
     predicted_snow_cm: Optional[float] = None
     forecast_sparkline: list[ForecastSnowDay] = []
+    forecast_source: Optional[str] = None   # 'nws_hrrr' | 'open_meteo'
+    depth_source: Optional[str] = None      # 'synoptic_station' | 'open_meteo'
 
 
 class RankingsMeta(BaseModel):
@@ -96,6 +100,31 @@ class RegionEntry(BaseModel):
     subregions: list[str]
     subregion_counts: dict[str, int] = {}
     resort_count: int
+
+
+class SkiRegionEntry(BaseModel):
+    slug: str
+    label: str
+    resort_count: int
+
+
+class CountryEntry(BaseModel):
+    code: str
+    label: str
+    resort_count: int
+    flag: str
+
+
+class ContinentEntry(BaseModel):
+    slug: str
+    label: str
+    resort_count: int
+    ski_regions: list[SkiRegionEntry]
+    countries: list[CountryEntry]
+
+
+class HierarchyResponse(BaseModel):
+    continents: list[ContinentEntry]
 
 
 class HealthResponse(BaseModel):

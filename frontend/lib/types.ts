@@ -5,6 +5,8 @@ export interface Resort {
   country: string | null;
   region: string | null;
   subregion: string | null;
+  continent: string | null;
+  ski_region: string | null;
   latitude: number;
   longitude: number;
   elevation_base_m: number | null;
@@ -44,6 +46,8 @@ export interface RankingEntry {
   stale_data: boolean;
   predicted_snow_cm: number | null;
   forecast_sparkline: ForecastSnowDay[];
+  forecast_source?: string | null;
+  depth_source?: string | null;
 }
 
 export interface RankingsMeta {
@@ -85,6 +89,31 @@ export interface RegionEntry {
   resort_count: number;
 }
 
+export interface SkiRegionEntry {
+  slug: string;
+  label: string;
+  resort_count: number;
+}
+
+export interface CountryEntry {
+  code: string;
+  label: string;
+  resort_count: number;
+  flag: string;
+}
+
+export interface ContinentEntry {
+  slug: string;
+  label: string;
+  resort_count: number;
+  ski_regions: SkiRegionEntry[];
+  countries: CountryEntry[];
+}
+
+export interface HierarchyResponse {
+  continents: ContinentEntry[];
+}
+
 export type HorizonDays = 0 | 3 | 7 | 14;
 
 export interface WeightOverrides {
@@ -98,7 +127,9 @@ export interface RankingsFilters {
   horizon_days: HorizonDays;
   region?: string[];
   subregion?: string[];
-  country?: string;
+  continent?: string;
+  ski_region?: string[];
+  country?: string[];
   min_elevation_m?: number;
   weights?: WeightOverrides;
   sort?: "score" | "predicted_snow";
