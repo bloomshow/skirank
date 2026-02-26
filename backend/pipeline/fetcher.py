@@ -1,8 +1,12 @@
 """
-Async HTTP fetcher for Open-Meteo weather API.
+Async HTTP fetcher for Open-Meteo weather API + NWS snowfall forecasts.
 
 Groups resorts into batches of PIPELINE_BATCH_SIZE and makes concurrent requests
 to the Open-Meteo /v1/forecast endpoint for both current conditions and 16-day forecasts.
+
+For US resorts, NWS gridpoint forecasts (HRRR, 3km resolution) are fetched and
+overlaid onto the Open-Meteo snowfall values, which are more accurate for complex
+mountain terrain than Open-Meteo's global ensemble model.
 """
 from __future__ import annotations
 
@@ -34,6 +38,12 @@ DAILY_VARS = [
     "precipitation_probability_max",
     "weathercode",
 ]
+
+# NWS API settings
+NWS_POINTS_BASE = "https://api.weather.gov/points"
+NWS_USER_AGENT = "SkiRank/1.0 (skirank.app)"
+NWS_TIMEOUT = 20.0       # NWS can be slow
+NWS_MAX_CONCURRENT = 8   # Limit concurrent NWS connections
 
 
 @dataclass
@@ -209,6 +219,126 @@ def _safe_int(lst: list, i: int) -> int | None:
         return None
 
 
+# ---------------------------------------------------------------------------
+# NWS snowfall overlay (US resorts only)
+# ---------------------------------------------------------------------------
+
+async def _fetch_nws_daily_snowfall(
+    client: httpx.AsyncClient,
+    resort: dict,
+    semaphore: asyncio.Semaphore,
+) -> dict[date, float] | None:
+    """
+    Fetch NWS gridpoint forecast for a single US resort.
+
+    Two-step: /points/{lat},{lon} → grid URL → snowfallAmount time series.
+    Returns {date: snowfall_cm} for all dates in the NWS forecast, or None on
+    any failure so the caller can fall back to Open-Meteo values.
+    """
+    lat = resort["latitude"]
+    lon = resort["longitude"]
+    resort_id = resort["id"]
+
+    async with semaphore:
+        # Step 1: resolve WFO grid coordinates
+        try:
+            resp = await client.get(
+                f"{NWS_POINTS_BASE}/{lat:.4f},{lon:.4f}",
+                timeout=NWS_TIMEOUT,
+            )
+            resp.raise_for_status()
+            grid_url = resp.json()["properties"]["forecastGridData"]
+        except Exception as exc:
+            logger.warning("NWS points lookup failed for %s (%.4f, %.4f): %s", resort_id, lat, lon, exc)
+            return None
+
+        # Step 2: fetch gridpoint forecast data
+        try:
+            resp = await client.get(grid_url, timeout=NWS_TIMEOUT)
+            resp.raise_for_status()
+            data = resp.json()
+        except Exception as exc:
+            logger.warning("NWS grid data failed for %s: %s", resort_id, exc)
+            return None
+
+    # Parse snowfallAmount — NWS returns SI units (wmoUnit:mm) even for US forecasts.
+    # validTime format: "2026-02-26T06:00:00+00:00/PT6H"
+    # value: total snowfall in the stated unit during that interval
+    try:
+        snowfall_props = data["properties"].get("snowfallAmount", {})
+        uom = snowfall_props.get("uom", "")
+        values = snowfall_props.get("values", [])
+        if not values:
+            logger.debug("NWS returned no snowfallAmount values for %s", resort_id)
+            return None
+
+        daily_raw: dict[date, float] = {}
+        for entry in values:
+            raw_val = entry.get("value")
+            if raw_val is None:
+                continue
+            time_str = entry.get("validTime", "").split("/")[0]
+            try:
+                dt = datetime.fromisoformat(time_str).astimezone(timezone.utc)
+            except ValueError:
+                continue
+            day = dt.date()
+            daily_raw[day] = daily_raw.get(day, 0.0) + float(raw_val)
+
+        if not daily_raw:
+            return None
+
+        # Convert to cm based on the unit returned by NWS
+        def _to_cm(v: float) -> float:
+            if "mm" in uom:
+                return round(v / 10, 1)    # mm → cm
+            elif "in" in uom:
+                return round(v * 2.54, 1)  # inches → cm
+            return round(v, 1)             # assume cm already
+
+        return {d: _to_cm(v) for d, v in daily_raw.items()}
+
+    except (KeyError, TypeError) as exc:
+        logger.warning("NWS parse error for %s: %s", resort_id, exc)
+        return None
+
+
+async def fetch_nws_snowfall_overlays(
+    us_resorts: list[dict],
+) -> dict[str, dict[date, float]]:
+    """
+    Concurrently fetch NWS snowfall forecasts for all US resorts.
+
+    Returns resort_id → {date: snowfall_cm}. Resorts that fail are excluded
+    (caller falls back to Open-Meteo for them).
+    """
+    if not us_resorts:
+        return {}
+
+    semaphore = asyncio.Semaphore(NWS_MAX_CONCURRENT)
+    nws_headers = {"User-Agent": NWS_USER_AGENT, "Accept": "application/geo+json"}
+
+    async with httpx.AsyncClient(headers=nws_headers) as client:
+        tasks = [
+            _fetch_nws_daily_snowfall(client, resort, semaphore)
+            for resort in us_resorts
+        ]
+        raw_results = await asyncio.gather(*tasks, return_exceptions=True)
+
+    overlays: dict[str, dict[date, float]] = {}
+    for resort, result in zip(us_resorts, raw_results):
+        if isinstance(result, Exception):
+            logger.warning("NWS task exception for %s: %s", resort["id"], result)
+        elif result is not None:
+            overlays[resort["id"]] = result
+
+    logger.info(
+        "NWS snowfall overlay: %d/%d US resorts succeeded",
+        len(overlays), len(us_resorts),
+    )
+    return overlays
+
+
 async def fetch_batch(
     client: httpx.AsyncClient,
     resorts: list[dict],  # list of {id, latitude, longitude}
@@ -252,6 +382,9 @@ async def fetch_all_resorts(
     """
     Fetch weather data for all resorts, batched by PIPELINE_BATCH_SIZE.
 
+    For US resorts, NWS gridpoint snowfall forecasts are fetched and overlaid
+    on top of Open-Meteo forecast snowfall values after the main batch fetch.
+
     Returns (successful_results, failed_resort_ids).
     """
     results: list[ResortWeatherData] = []
@@ -281,5 +414,38 @@ async def fetch_all_resorts(
             for resort in batch:
                 if resort["id"] not in successful_ids:
                     failed_ids.append(resort["id"])
+
+    # --- NWS snowfall overlay for US resorts ---
+    us_resorts = [
+        r for r in resorts
+        if r.get("country") == "US" and r["id"] in successful_ids
+    ]
+    if us_resorts:
+        logger.info(
+            "Fetching NWS snowfall overlays for %d US resorts...", len(us_resorts)
+        )
+        try:
+            nws_overlays = await fetch_nws_snowfall_overlays(us_resorts)
+        except Exception as exc:
+            logger.warning(
+                "NWS overlay fetch failed entirely: %s — keeping Open-Meteo forecasts", exc
+            )
+            nws_overlays = {}
+
+        if nws_overlays:
+            result_map = {w.resort_id: w for w in results}
+            applied = 0
+            for resort_id, daily_snow in nws_overlays.items():
+                weather = result_map.get(resort_id)
+                if not weather:
+                    continue
+                for fc in weather.forecasts:
+                    if fc.forecast_date in daily_snow:
+                        fc.snowfall_cm = daily_snow[fc.forecast_date]
+                applied += 1
+            logger.info(
+                "Applied NWS snowfall to %d/%d US resorts",
+                applied, len(us_resorts),
+            )
 
     return results, failed_ids
