@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import type { RankingEntry, ForecastSnowDay, ForecastDay, ClientWeights } from "../lib/types";
+import type { RankingEntry, ForecastSnowDay, ForecastDay, ClientWeights, DataQualityInfo } from "../lib/types";
 import { fetchResortForecast } from "../lib/api";
 import { useAppContext } from "../context/AppContext";
 import { fmtDepth, fmtSnow, fmtTemp, fmtWind } from "../lib/units";
@@ -51,6 +51,61 @@ function windTileColor(kmh: number | null): string {
 
 function neutralTile(): string {
   return "bg-slate-50 text-slate-500";
+}
+
+// ── Quality badge ─────────────────────────────────────────────────────────────
+
+function QualityBadge({ dq }: { dq: DataQualityInfo | null | undefined }) {
+  if (!dq) return null;
+
+  if (dq.overall === "stale" && dq.last_updated) {
+    const hoursOld = Math.round(
+      (Date.now() - new Date(dq.last_updated).getTime()) / 3_600_000
+    );
+    return (
+      <span
+        title={`Our last successful data fetch for this resort was ${hoursOld}h ago.`}
+        className="text-xs bg-slate-100 text-slate-500 px-2 py-0.5 rounded-full"
+      >
+        🕐 {hoursOld}h old
+      </span>
+    );
+  }
+
+  if (dq.overall === "unreliable") {
+    return (
+      <span
+        title="We don't have a reliable reading for this resort. Shown value is a model estimate."
+        className="text-xs bg-slate-100 text-slate-500 px-2 py-0.5 rounded-full"
+      >
+        ❓ Depth uncertain
+      </span>
+    );
+  }
+
+  if (dq.overall === "suspect") {
+    return (
+      <span
+        title="This reading couldn't be verified against a second source. Treat with caution."
+        className="text-xs bg-amber-50 text-amber-700 px-2 py-0.5 rounded-full"
+      >
+        ⚠️ Unverified depth
+      </span>
+    );
+  }
+
+  if (dq.depth_source === "synoptic_station") {
+    return (
+      <span
+        title="Snow depth from on-mountain weather station"
+        className="text-xs text-slate-400"
+      >
+        📡 Station
+      </span>
+    );
+  }
+
+  return null;
 }
 
 // ── Sparkline ─────────────────────────────────────────────────────────────────
@@ -156,7 +211,7 @@ interface ResortCardProps {
 
 export default function ResortCard({ entry }: ResortCardProps) {
   const { state } = useAppContext();
-  const { resort, stale_data, forecast_sparkline, forecast_source, depth_source, metrics, position_delta } = entry;
+  const { resort, stale_data, forecast_sparkline, forecast_source, depth_source, metrics, position_delta, data_quality } = entry;
   const { unitSystem, clientWeights, horizon } = state;
 
   const [expanded, setExpanded] = useState(false);
@@ -182,6 +237,7 @@ export default function ResortCard({ entry }: ResortCardProps) {
   const wind  = fmtWind(metrics?.wind_kmh, unitSystem);
 
   const forecastLabel = horizon === 0 ? "7-day" : `${horizon}-day`;
+  const depthUnreliable = data_quality?.overall === "unreliable" || data_quality?.overall === "stale";
 
   // Forecast display: show "None forecast" if 0
   const fcstPrimary =
@@ -248,10 +304,10 @@ export default function ResortCard({ entry }: ResortCardProps) {
       <div className="flex gap-1.5 px-3 pb-3">
         <MetricTile
           icon="❄️"
-          primary={depth.primary}
-          secondary={depth.secondary}
+          primary={depthUnreliable ? "—" : depth.primary}
+          secondary={depthUnreliable ? undefined : depth.secondary}
           label="Base"
-          colorClass={baseTileColor(metrics?.base_depth_cm ?? null)}
+          colorClass={depthUnreliable ? "bg-slate-50 text-slate-400 italic" : baseTileColor(metrics?.base_depth_cm ?? null)}
           isZeroWeight={clientWeights.base_depth === 0}
         />
         <MetricTile
@@ -292,13 +348,11 @@ export default function ResortCard({ entry }: ResortCardProps) {
         />
       </div>
 
-      {/* Footer: source badges + expand */}
+      {/* Footer: quality badge + forecast source + expand */}
       <div className="border-t border-slate-100 px-4 py-2 flex items-center gap-3 text-xs text-slate-400">
-        {depth_source === "synoptic_station" && (
-          <span title="Snow depth from on-mountain weather station">📡 Station</span>
-        )}
+        <QualityBadge dq={data_quality} />
         {forecast_source === "nws_hrrr" && (
-          <span title="Forecast from NWS HRRR high-resolution model (3km)">🎯 High-res</span>
+          <span title="Forecast from NWS HRRR high-resolution model (3km)" className="hidden sm:inline">🎯 High-res</span>
         )}
         <button
           onClick={() => setExpanded((p) => !p)}

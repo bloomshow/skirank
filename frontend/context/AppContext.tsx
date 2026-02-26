@@ -22,9 +22,11 @@ interface AppState {
   unitSystem: UnitSystem;
   view: "list" | "map";
   sort: "score" | "predicted_snow";
+  hideUncertain: boolean;
 }
 
 type Action =
+  | { type: "SET_HIDE_UNCERTAIN"; payload: boolean }
   | { type: "SET_HORIZON"; payload: HorizonDays }
   | { type: "TOGGLE_REGION"; payload: string }
   | { type: "CLEAR_REGIONS" }
@@ -55,6 +57,7 @@ const DEFAULT_STATE: AppState = {
   unitSystem: "metric", // overridden on mount by detectUnitSystem()
   view: "list",
   sort: "score",
+  hideUncertain: false,
 };
 
 function reducer(state: AppState, action: Action): AppState {
@@ -116,6 +119,8 @@ function reducer(state: AppState, action: Action): AppState {
       return { ...state, view: action.payload };
     case "SET_SORT":
       return { ...state, sort: action.payload };
+    case "SET_HIDE_UNCERTAIN":
+      return { ...state, hideUncertain: action.payload };
     default:
       return state;
   }

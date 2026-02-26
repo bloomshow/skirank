@@ -1,7 +1,7 @@
 from __future__ import annotations
 import uuid
 from datetime import datetime, date
-from typing import Optional
+from typing import Optional, List
 from pydantic import BaseModel
 
 
@@ -55,6 +55,14 @@ class MetricsSnapshot(BaseModel):
     wind_kmh: Optional[float] = None
 
 
+class DataQualityInfo(BaseModel):
+    overall: str                          # 'verified'|'good'|'suspect'|'unreliable'|'stale'
+    depth_source: Optional[str] = None   # 'synoptic_station'|'open_meteo'
+    depth_confidence: str = "unknown"    # 'high'|'medium'|'low'|'unknown'
+    flags: List[str] = []
+    last_updated: Optional[datetime] = None
+
+
 class RankingEntry(BaseModel):
     rank: int
     resort: ResortBase
@@ -68,6 +76,7 @@ class RankingEntry(BaseModel):
     depth_source: Optional[str] = None      # 'synoptic_station' | 'open_meteo'
     metrics: Optional[MetricsSnapshot] = None
     position_delta: Optional[int] = None
+    data_quality: Optional[DataQualityInfo] = None
 
 
 class RankingsMeta(BaseModel):

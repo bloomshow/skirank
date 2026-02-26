@@ -6,7 +6,7 @@ import uuid
 from pathlib import Path
 
 from fastapi import APIRouter, BackgroundTasks, Header, HTTPException
-from sqlalchemy import select, update
+from sqlalchemy import select, update, func, and_
 from sqlalchemy.dialects.postgresql import insert as pg_insert
 
 from backend.db import init_db, AsyncSessionLocal
@@ -108,6 +108,10 @@ async def run_migrate(x_admin_key: str = Header(...)):
         "ALTER TABLE forecast_snapshots ADD COLUMN IF NOT EXISTS source VARCHAR(50)",
         "ALTER TABLE resorts ADD COLUMN IF NOT EXISTS continent VARCHAR(50)",
         "ALTER TABLE resorts ADD COLUMN IF NOT EXISTS ski_region VARCHAR(100)",
+        # v1.5 data quality columns
+        "ALTER TABLE weather_snapshots ADD COLUMN IF NOT EXISTS data_quality VARCHAR(20) DEFAULT 'good'",
+        "ALTER TABLE weather_snapshots ADD COLUMN IF NOT EXISTS quality_flags JSONB DEFAULT '[]'",
+        "ALTER TABLE weather_snapshots ADD COLUMN IF NOT EXISTS previous_depth_cm DECIMAL(6,1)",
     ]
     from sqlalchemy import text
     async with AsyncSessionLocal() as db:
@@ -216,4 +220,64 @@ async def set_hierarchy(x_admin_key: str = Header(...)):
     return {
         "status": "ok",
         "message": f"Set hierarchy for {assigned}/{len(updates)} resorts",
+    }
+
+
+@router.get("/quality-report")
+async def quality_report(x_admin_key: str = Header(...)):
+    """Data quality summary and list of flagged resorts."""
+    _require_key(x_admin_key)
+
+    from collections import Counter
+    from backend.models.weather import WeatherSnapshot
+    from backend.models.resort import Resort
+
+    async with AsyncSessionLocal() as db:
+        # Most recent snapshot per resort
+        snap_subq = (
+            select(WeatherSnapshot.resort_id, func.max(WeatherSnapshot.fetched_at).label("latest"))
+            .group_by(WeatherSnapshot.resort_id)
+            .subquery()
+        )
+        result = await db.execute(
+            select(
+                Resort.name,
+                Resort.slug,
+                WeatherSnapshot.data_quality,
+                WeatherSnapshot.quality_flags,
+                WeatherSnapshot.fetched_at,
+            )
+            .join(snap_subq, Resort.id == snap_subq.c.resort_id)
+            .join(
+                WeatherSnapshot,
+                and_(
+                    WeatherSnapshot.resort_id == Resort.id,
+                    WeatherSnapshot.fetched_at == snap_subq.c.latest,
+                ),
+            )
+            .order_by(Resort.name)
+        )
+        rows = result.all()
+
+        last_run_result = await db.execute(select(func.max(WeatherSnapshot.fetched_at)))
+        last_pipeline_run = last_run_result.scalar_one_or_none()
+
+    quality_counts = Counter(row.data_quality or "good" for row in rows)
+    flagged = [
+        {
+            "name": row.name,
+            "slug": row.slug,
+            "quality": row.data_quality or "good",
+            "flags": row.quality_flags or [],
+            "last_updated": row.fetched_at.isoformat() if row.fetched_at else None,
+        }
+        for row in rows
+        if (row.data_quality or "good") in ("suspect", "unreliable", "stale")
+    ]
+
+    return {
+        "quality_summary": dict(quality_counts),
+        "total_resorts": len(rows),
+        "flagged_resorts": sorted(flagged, key=lambda x: x["quality"]),
+        "last_pipeline_run": last_pipeline_run.isoformat() if last_pipeline_run else None,
     }

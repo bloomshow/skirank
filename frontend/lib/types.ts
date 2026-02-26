@@ -45,6 +45,14 @@ export interface ForecastSnowDay {
   snowfall_cm: number | null;
 }
 
+export interface DataQualityInfo {
+  overall: "verified" | "good" | "suspect" | "unreliable" | "stale" | string;
+  depth_source: string | null;
+  depth_confidence: "high" | "medium" | "low" | "unknown";
+  flags: string[];
+  last_updated: string | null;
+}
+
 export interface RankingEntry {
   rank: number;
   resort: Resort;
@@ -58,6 +66,7 @@ export interface RankingEntry {
   depth_source?: string | null;
   metrics?: MetricsSnapshot | null;
   position_delta?: number | null;
+  data_quality?: DataQualityInfo | null;
 }
 
 export interface RankingsMeta {

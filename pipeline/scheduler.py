@@ -14,6 +14,7 @@ from apscheduler.triggers.cron import CronTrigger
 
 from pipeline.config import PIPELINE_CRON_SCHEDULE, SCORE_HORIZONS
 from pipeline.fetcher import fetch_all_resorts
+from pipeline.validator import run_validation
 from pipeline.scorer import (
     compute_score,
     CurrentConditions,
@@ -70,8 +71,29 @@ async def run_pipeline() -> None:
     logger.info("Fetching weather for %d resorts...", len(resorts))
     weather_results, failed_ids = await fetch_all_resorts(resorts)
 
-    # Build a lookup for resort metadata (used for Snotel override and scoring below)
+    # Build a lookup for resort metadata (used for station override, validation, and scoring)
     resort_meta_map = {r["id"]: r for r in resorts}
+
+    # Query previous depths from DB before writing today's snapshots
+    previous_depths: dict[str, float] = {}
+    async with SessionLocal() as session:
+        from sqlalchemy import func as _func, and_ as _and_
+        from backend.models.weather import WeatherSnapshot as _WS
+        prev_subq = (
+            select(_WS.resort_id, _func.max(_WS.fetched_at).label("latest"))
+            .group_by(_WS.resort_id)
+            .subquery()
+        )
+        prev_result = await session.execute(
+            select(_WS.resort_id, _WS.snow_depth_cm)
+            .join(prev_subq, _and_(
+                _WS.resort_id == prev_subq.c.resort_id,
+                _WS.fetched_at == prev_subq.c.latest,
+            ))
+        )
+        for row in prev_result.all():
+            if row.snow_depth_cm is not None:
+                previous_depths[str(row.resort_id)] = float(row.snow_depth_cm)
 
     # Enrich snow depth from on-mountain stations for all resorts (overrides Open-Meteo grid estimate)
     from pipeline.station_fetcher import fetch_station_depths
@@ -81,6 +103,7 @@ async def run_pipeline() -> None:
     for weather in weather_results:
         resort = resort_meta_map.get(weather.resort_id, {})
         slug = resort.get("slug")
+        # openmeteo_depth_cm is already set from the fetcher; station override only changes snow_depth_cm
         if slug and slug in station_readings:
             weather.snow_depth_cm = station_readings[slug].snow_depth_cm
             weather.depth_source = "synoptic_station"
@@ -91,6 +114,23 @@ async def run_pipeline() -> None:
                 station_readings[slug].stid,
                 station_readings[slug].data_date,
             )
+
+    # Run data quality validation for each resort
+    for weather in weather_results:
+        resort = resort_meta_map.get(weather.resort_id, {})
+        weather.previous_depth_cm = previous_depths.get(weather.resort_id)
+        quality, flags = run_validation(
+            resort=resort,
+            depth_cm=weather.snow_depth_cm,
+            openmeteo_depth_cm=weather.openmeteo_depth_cm,
+            previous_depth_cm=weather.previous_depth_cm,
+            snowfall_24h_cm=weather.new_snow_24h_cm,
+            avg_temp_c=weather.avg_temp_72h_c,
+            depth_source=weather.depth_source,
+            fetch_date=today,
+        )
+        weather.data_quality = quality.value
+        weather.quality_flags = flags
 
     failure_rate = len(failed_ids) / len(resorts)
     if failure_rate > 0.05:

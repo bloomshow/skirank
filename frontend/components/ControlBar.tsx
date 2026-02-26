@@ -147,6 +147,17 @@ export default function ControlBar({ hierarchy, totalResorts }: ControlBarProps)
           >
             {showWeights ? "Hide preferences" : "What matters to you?"}
           </button>
+
+          {/* Hide uncertain toggle */}
+          <label className="flex items-center gap-2 text-sm text-slate-600 cursor-pointer select-none">
+            <input
+              type="checkbox"
+              checked={state.hideUncertain}
+              onChange={(e) => dispatch({ type: "SET_HIDE_UNCERTAIN", payload: e.target.checked })}
+              className="rounded border-slate-300 accent-blue-500"
+            />
+            Hide uncertain data
+          </label>
         </div>
 
         {/* Level 1: Continent tabs */}

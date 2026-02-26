@@ -2,7 +2,8 @@ from __future__ import annotations
 import uuid
 from datetime import datetime, date
 from typing import Optional
-from sqlalchemy import String, Integer, Numeric, DateTime, Date, ForeignKey, func
+from sqlalchemy import String, Integer, Numeric, DateTime, Date, ForeignKey, UniqueConstraint
+from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column
 from backend.db import Base
 
@@ -24,6 +25,9 @@ class WeatherSnapshot(Base):
     visibility_km: Mapped[Optional[float]] = mapped_column(Numeric(5, 1))
     weather_code: Mapped[Optional[int]] = mapped_column(Integer)
     source: Mapped[Optional[str]] = mapped_column(String(50))
+    data_quality: Mapped[Optional[str]] = mapped_column(String(20), default="good")
+    quality_flags: Mapped[Optional[list]] = mapped_column(JSONB, nullable=True)
+    previous_depth_cm: Mapped[Optional[float]] = mapped_column(Numeric(6, 1))
 
 
 class ForecastSnapshot(Base):
@@ -43,3 +47,19 @@ class ForecastSnapshot(Base):
     weather_code: Mapped[Optional[int]] = mapped_column(Integer)
     confidence_score: Mapped[Optional[float]] = mapped_column(Numeric(4, 3))
     source: Mapped[Optional[str]] = mapped_column(String(50))  # 'open_meteo' | 'nws_hrrr'
+
+
+class ResortDepthHistory(Base):
+    """Elevation-bootstrapped and eventually per-resort historical depth averages."""
+    __tablename__ = "resort_depth_history"
+    __table_args__ = (UniqueConstraint("resort_id", "month", "day_of_month"),)
+
+    id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
+    resort_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("resorts.id", ondelete="CASCADE"), nullable=False, index=True
+    )
+    month: Mapped[int] = mapped_column(Integer, nullable=False)
+    day_of_month: Mapped[int] = mapped_column(Integer, nullable=False)
+    avg_depth_cm: Mapped[Optional[float]] = mapped_column(Numeric(6, 1))
+    sample_count: Mapped[int] = mapped_column(Integer, default=0)
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=datetime.utcnow)

@@ -20,6 +20,7 @@ from backend.schemas.responses import (
     SnapshotSummary,
     ForecastSnowDay,
     MetricsSnapshot,
+    DataQualityInfo,
 )
 from backend.cache import cache_get, cache_set
 
@@ -76,6 +77,7 @@ async def get_rankings(
     ski_region: List[str] = Query(default=[]),
     min_elevation_m: Optional[int] = Query(None),
     sort: str = Query("score", pattern="^(score|predicted_snow)$"),
+    hide_uncertain: bool = Query(False),
     page: int = Query(1, ge=1),
     per_page: int = Query(50, ge=1, le=300),
     w_base_depth: Optional[float] = Query(None, ge=0.0, le=1.0),
@@ -217,6 +219,11 @@ async def get_rankings(
         stmt = stmt.where(Resort.country.in_([c.upper() for c in country]))
     if min_elevation_m:
         stmt = stmt.where(Resort.elevation_summit_m >= min_elevation_m)
+    if hide_uncertain:
+        stmt = stmt.where(
+            (WeatherSnapshot.data_quality.notin_(["unreliable", "stale"])) |
+            (WeatherSnapshot.data_quality.is_(None))
+        )
 
     # Count total before pagination
     count_result = await db.execute(
@@ -269,7 +276,29 @@ async def get_rankings(
         computed_score = _recompute_score(score, weights) if custom_weights else (
             float(score.score_total) if score.score_total else None
         )
-        stale = snapshot is None or snapshot.fetched_at < stale_threshold if snapshot else True
+        stale = (snapshot is None) or (snapshot.fetched_at < stale_threshold)
+
+        # Build DataQualityInfo — stale overrides whatever the pipeline wrote
+        if snapshot is None:
+            dq = DataQualityInfo(
+                overall="good",
+                depth_source=None,
+                depth_confidence="unknown",
+                flags=[],
+                last_updated=None,
+            )
+        else:
+            pipeline_quality = snapshot.data_quality or "good"
+            overall = "stale" if stale else pipeline_quality
+            confidence_map = {"verified": "high", "good": "medium", "suspect": "low",
+                              "unreliable": "low", "stale": "low"}
+            dq = DataQualityInfo(
+                overall=overall,
+                depth_source=depth_source,
+                depth_confidence=confidence_map.get(overall, "unknown"),
+                flags=snapshot.quality_flags or [],
+                last_updated=snapshot.fetched_at,
+            )
 
         results.append(
             RankingEntry(
@@ -302,6 +331,7 @@ async def get_rankings(
                     wind_kmh=float(snapshot.wind_speed_kmh) if snapshot and snapshot.wind_speed_kmh else None,
                 ),
                 position_delta=None,
+                data_quality=dq,
             )
         )
 

@@ -62,6 +62,9 @@ async def write_weather_snapshots(
                 wind_speed_kmh=data.wind_speed_kmh,
                 weather_code=data.weather_code,
                 source=data.depth_source,
+                data_quality=data.data_quality,
+                quality_flags=data.quality_flags or [],
+                previous_depth_cm=data.previous_depth_cm,
             )
             session.add(snapshot)
 

@@ -55,9 +55,15 @@ class ResortWeatherData:
     new_snow_24h_cm: float | None = None
     new_snow_72h_cm: float | None = None
     temperature_c: float | None = None
+    avg_temp_72h_c: float | None = None   # 72h average temperature (for validation)
     wind_speed_kmh: float | None = None
     weather_code: int | None = None
     depth_source: str = "open_meteo"
+    openmeteo_depth_cm: float | None = None  # Open-Meteo depth before any station override
+    # Data quality (set by validator in scheduler)
+    data_quality: str = "good"
+    quality_flags: list = field(default_factory=list)
+    previous_depth_cm: float | None = None   # Most recent DB depth before this run
     # 16-day forecasts
     forecasts: list[ForecastDay] = field(default_factory=list)
 
@@ -141,6 +147,10 @@ def _parse_batch_response(
                 temperature_c = v
                 break
 
+        # 72h average temperature (for quality validation)
+        temp_72h = [v for v in temp_series[-72:] if v is not None]
+        avg_temp_72h_c = round(sum(temp_72h) / len(temp_72h), 1) if temp_72h else None
+
         # Current wind speed (km/h): max over the last 24 h of hourly data.
         # Using the max rather than the latest instantaneous reading gives a
         # more representative picture of resort conditions (gusts, ridge wind).
@@ -193,9 +203,11 @@ def _parse_batch_response(
                 resort_id=resort_id,
                 fetched_at=fetched_at,
                 snow_depth_cm=snow_depth_cm,
+                openmeteo_depth_cm=snow_depth_cm,  # preserved before any station override
                 new_snow_24h_cm=round(new_24h / 10, 1) if new_24h else 0.0,  # mm → cm
                 new_snow_72h_cm=round(new_72h / 10, 1) if new_72h else 0.0,
                 temperature_c=temperature_c,
+                avg_temp_72h_c=avg_temp_72h_c,
                 wind_speed_kmh=wind_speed_kmh,
                 weather_code=weather_code,
                 forecasts=forecasts,

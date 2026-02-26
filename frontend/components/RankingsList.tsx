@@ -83,13 +83,20 @@ export default function RankingsList() {
     load();
   }, [load]);
 
-  // Re-rank client-side when weights change (debounced 150ms)
+  // Re-rank and filter client-side when weights or hideUncertain change (debounced 150ms)
   useEffect(() => {
     const timer = setTimeout(() => {
-      setSortedEntries(rankResorts(serverEntries, state.clientWeights));
+      const ranked = rankResorts(serverEntries, state.clientWeights);
+      const filtered = state.hideUncertain
+        ? ranked.filter((e) => {
+            const q = e.data_quality?.overall;
+            return q !== "unreliable" && q !== "stale";
+          })
+        : ranked;
+      setSortedEntries(filtered);
     }, 150);
     return () => clearTimeout(timer);
-  }, [serverEntries, state.clientWeights]);
+  }, [serverEntries, state.clientWeights, state.hideUncertain]);
 
   if (error) {
     return (
