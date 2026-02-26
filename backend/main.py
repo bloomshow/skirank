@@ -7,7 +7,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from backend.db import init_db
-from backend.routers import rankings, resorts, regions
+from backend.routers import rankings, resorts, regions, admin
 from backend.schemas.responses import HealthResponse
 
 
@@ -37,6 +37,7 @@ API_PREFIX = "/api/v1"
 app.include_router(rankings.router, prefix=API_PREFIX)
 app.include_router(resorts.router, prefix=API_PREFIX)
 app.include_router(regions.router, prefix=API_PREFIX)
+app.include_router(admin.router, prefix=API_PREFIX)
 
 
 @app.get(f"{API_PREFIX}/health", response_model=HealthResponse, tags=["system"])
