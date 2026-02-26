@@ -1,0 +1,254 @@
+{
+  "jackson-hole": {
+    "stid": "JHR",
+    "name": "JACKSON HOLE-RAYMER",
+    "network": "48",
+    "distance_km": 2.89,
+    "station_elev_m": 2943
+  },
+  "mammoth-mountain": {
+    "stid": "MCUES",
+    "name": "CRREL-UCSB Energy Site",
+    "network": "12",
+    "distance_km": 1.39,
+    "station_elev_m": 2940
+  },
+  "big-sky": {
+    "stid": "BSKM8",
+    "name": "LONE MOUNTAIN",
+    "network": "25",
+    "distance_km": 2.41,
+    "station_elev_m": 2707
+  },
+  "steamboat": {
+    "stid": "STORM",
+    "name": "Storm Peak Laboratory",
+    "network": "153",
+    "distance_km": 5.09,
+    "station_elev_m": 3210
+  },
+  "sun-valley": {
+    "stid": "SVB",
+    "name": "Sun Valley - Bald Mtn.",
+    "network": "6",
+    "distance_km": 5.67,
+    "station_elev_m": 2747
+  },
+  "telluride": {
+    "stid": "CATEL",
+    "name": "TELLURIDE SKI RESORT",
+    "network": "46",
+    "distance_km": 5.05,
+    "station_elev_m": 3706
+  },
+  "breckenridge": {
+    "stid": "HOOC2",
+    "name": "HOOSIER PASS",
+    "network": "25",
+    "distance_km": 13.6,
+    "station_elev_m": 3539
+  },
+  "keystone": {
+    "stid": "CAABM",
+    "name": "ARAPAHOE BASIN SKI AREA - MIDWAY",
+    "network": "46",
+    "distance_km": 7.37,
+    "station_elev_m": 3554
+  },
+  "copper-mountain": {
+    "stid": "CPMC2",
+    "name": "COPPER MOUNTAIN",
+    "network": "25",
+    "distance_km": 2.3,
+    "station_elev_m": 3216
+  },
+  "crested-butte": {
+    "stid": "BUTC2",
+    "name": "BUTTE",
+    "network": "25",
+    "distance_km": 1.14,
+    "station_elev_m": 3097
+  },
+  "taos-ski-valley": {
+    "stid": "T7TAO",
+    "name": "Top 7",
+    "network": "215",
+    "distance_km": 2.38,
+    "station_elev_m": 3505
+  },
+  "deer-valley": {
+    "stid": "PCT",
+    "name": "PC - Summit",
+    "network": "111",
+    "distance_km": 4.58,
+    "station_elev_m": 2835
+  },
+  "solitude-mountain": {
+    "stid": "SOL",
+    "name": "SOLITUDE POWDERHORN",
+    "network": "6",
+    "distance_km": 1.67,
+    "station_elev_m": 3014
+  },
+  "brighton": {
+    "stid": "PKC",
+    "name": "PC - Jupiter",
+    "network": "111",
+    "distance_km": 2.81,
+    "station_elev_m": 3053
+  },
+  "snowbasin": {
+    "stid": "UUSBP",
+    "name": "Snowbasin Study Plot",
+    "network": "153",
+    "distance_km": 2.5,
+    "station_elev_m": 2529
+  },
+  "arapahoe-basin": {
+    "stid": "CAABM",
+    "name": "ARAPAHOE BASIN SKI AREA - MIDWAY",
+    "network": "46",
+    "distance_km": 1.19,
+    "station_elev_m": 3554
+  },
+  "winter-park": {
+    "stid": "UUBTP",
+    "name": "Berthoud Pass",
+    "network": "153",
+    "distance_km": 9.33,
+    "station_elev_m": 3445
+  },
+  "loveland-ski": {
+    "stid": "LBAC2",
+    "name": "LOVELAND BASIN",
+    "network": "25",
+    "distance_km": 0.74,
+    "station_elev_m": 3475
+  },
+  "purgatory": {
+    "stid": "SPSC2",
+    "name": "SPUD MOUNTAIN",
+    "network": "25",
+    "distance_km": 10.93,
+    "station_elev_m": 3249
+  },
+  "palisades-tahoe": {
+    "stid": "SIBSV",
+    "name": "OV-Siberia 8700'",
+    "network": "214",
+    "distance_km": 3.58,
+    "station_elev_m": 2652
+  },
+  "heavenly": {
+    "stid": "HVNC1",
+    "name": "HEAVENLY VALLEY",
+    "network": "25",
+    "distance_km": 2.36,
+    "station_elev_m": 2601
+  },
+  "northstar": {
+    "stid": "SIBSV",
+    "name": "OV-Siberia 8700'",
+    "network": "214",
+    "distance_km": 16.54,
+    "station_elev_m": 2652
+  },
+  "crystal-mountain-wa": {
+    "stid": "GRN62",
+    "name": "Crystal - Green Valley",
+    "network": "37",
+    "distance_km": 1.65,
+    "station_elev_m": 1899
+  },
+  "stevens-pass": {
+    "stid": "STS52",
+    "name": "Stevens Pass - Skyline",
+    "network": "37",
+    "distance_km": 1.83,
+    "station_elev_m": 1600
+  },
+  "schweitzer": {
+    "stid": "STZI1",
+    "name": "SCHWEITZER BASIN",
+    "network": "25",
+    "distance_km": 1.79,
+    "station_elev_m": 1856
+  },
+  "whitefish-mountain": {
+    "stid": "BIGMS",
+    "name": "Big Mountain Summit, Whitefish Ski Resort",
+    "network": "68",
+    "distance_km": 1.69,
+    "station_elev_m": 2053
+  },
+  "powder-mountain": {
+    "stid": "UTPWD",
+    "name": "Powder Mountain",
+    "network": "6",
+    "distance_km": 2.61,
+    "station_elev_m": 2712
+  },
+  "stowe": {
+    "stid": "COOPMMNV1",
+    "name": "MOUNT MANSFIELD",
+    "network": "77",
+    "distance_km": 2.76,
+    "station_elev_m": 1204
+  },
+  "sunday-river": {
+    "stid": "COOPBRLN3",
+    "name": "BERLIN",
+    "network": "74",
+    "distance_km": 26.18,
+    "station_elev_m": 280
+  },
+  "jay-peak": {
+    "stid": "COOPJAYV1",
+    "name": "JAY PEAK",
+    "network": "73",
+    "distance_km": 1.62,
+    "station_elev_m": 561
+  },
+  "stratton": {
+    "stid": "LBKV1",
+    "name": "LYE BROOK",
+    "network": "29",
+    "distance_km": 12.27,
+    "station_elev_m": 742
+  },
+  "loon-mountain": {
+    "stid": "HUBN3",
+    "name": "HUBBARD BROOK",
+    "network": "29",
+    "distance_km": 13.91,
+    "station_elev_m": 451
+  },
+  "red-mountain": {
+    "stid": "SENW1",
+    "name": "SENTINEL BUTTE",
+    "network": "25",
+    "distance_km": 54.45,
+    "station_elev_m": 1426
+  },
+  "vail": {
+    "stid": "CAVPQ",
+    "name": "VAIL SKI AREA PHQ",
+    "network": "46",
+    "distance_km": 4.59,
+    "station_elev_m": 3428
+  },
+  "aspen-snowmass": {
+    "stid": "CATLS",
+    "name": "SNOWMASS SKI AREA TIMBERLINE",
+    "network": "46",
+    "distance_km": 3.95,
+    "station_elev_m": 3512
+  },
+  "park-city": {
+    "stid": "PKC",
+    "name": "PC - Jupiter",
+    "network": "111",
+    "distance_km": 6.02,
+    "station_elev_m": 3053
+  }
+}

@@ -1,0 +1,218 @@
+{
+  "jackson-hole": {
+    "triplet": "689:WY:SNTL",
+    "name": "Phillips Bench",
+    "distance_km": 10.4,
+    "station_elev_m": 2490
+  },
+  "mammoth-mountain": {
+    "triplet": "MHP:CA:MSNT",
+    "name": "Mammoth Pass",
+    "distance_km": 2.31,
+    "station_elev_m": 2865
+  },
+  "big-sky": {
+    "triplet": "385:MT:SNTL",
+    "name": "Carrot Basin",
+    "distance_km": 37.04,
+    "station_elev_m": 2804
+  },
+  "steamboat": {
+    "triplet": "825:CO:SNTL",
+    "name": "Tower",
+    "distance_km": 14.01,
+    "station_elev_m": 3234
+  },
+  "sun-valley": {
+    "triplet": "14F09:ID:SNOW",
+    "name": "Mount Baldy",
+    "distance_km": 5.72,
+    "station_elev_m": 2697
+  },
+  "telluride": {
+    "triplet": "1344:CO:SNTL",
+    "name": "Alta Lakes",
+    "distance_km": 5.29,
+    "station_elev_m": 3441
+  },
+  "breckenridge": {
+    "triplet": "09046000:CO:USGS",
+    "name": "Boreas Pass Ditch at Boreas Pass",
+    "distance_km": 9.98,
+    "station_elev_m": 3508
+  },
+  "keystone": {
+    "triplet": "602:CO:SNTL",
+    "name": "Loveland Basin",
+    "distance_km": 8.5,
+    "station_elev_m": 3478
+  },
+  "copper-mountain": {
+    "triplet": "415:CO:SNTL",
+    "name": "Copper Mountain",
+    "distance_km": 2.37,
+    "station_elev_m": 3200
+  },
+  "crested-butte": {
+    "triplet": "380:CO:SNTL",
+    "name": "Butte",
+    "distance_km": 1.12,
+    "station_elev_m": 3106
+  },
+  "taos-ski-valley": {
+    "triplet": "05N14:NM:SNOW",
+    "name": "Taos Powderhorn",
+    "distance_km": 1.79,
+    "station_elev_m": 3371
+  },
+  "alta": {
+    "triplet": "766:UT:SNTL",
+    "name": "Snowbird",
+    "distance_km": 2.74,
+    "station_elev_m": 2795
+  },
+  "snowbird": {
+    "triplet": "766:UT:SNTL",
+    "name": "Snowbird",
+    "distance_km": 1.56,
+    "station_elev_m": 2795
+  },
+  "deer-valley": {
+    "triplet": "814:UT:SNTL",
+    "name": "Thaynes Canyon",
+    "distance_km": 4.89,
+    "station_elev_m": 2822
+  },
+  "solitude-mountain": {
+    "triplet": "814:UT:SNTL",
+    "name": "Thaynes Canyon",
+    "distance_km": 4.97,
+    "station_elev_m": 2822
+  },
+  "brighton": {
+    "triplet": "366:UT:SNTL",
+    "name": "Brighton",
+    "distance_km": 0.15,
+    "station_elev_m": 2679
+  },
+  "snowbasin": {
+    "triplet": "1300:UT:SNTL",
+    "name": "Powder Mountain",
+    "distance_km": 19.15,
+    "station_elev_m": 2588
+  },
+  "arapahoe-basin": {
+    "triplet": "505:CO:SNTL",
+    "name": "Grizzly Peak",
+    "distance_km": 0.44,
+    "station_elev_m": 3386
+  },
+  "winter-park": {
+    "triplet": "335:CO:SNTL",
+    "name": "Berthoud Summit",
+    "distance_km": 9.34,
+    "station_elev_m": 3444
+  },
+  "loveland-ski": {
+    "triplet": "602:CO:SNTL",
+    "name": "Loveland Basin",
+    "distance_km": 0.75,
+    "station_elev_m": 3478
+  },
+  "purgatory": {
+    "triplet": "780:CO:SNTL",
+    "name": "Spud Mountain",
+    "distance_km": 10.86,
+    "station_elev_m": 3249
+  },
+  "palisades-tahoe": {
+    "triplet": "784:CA:SNTL",
+    "name": "Palisades Tahoe",
+    "distance_km": 2.76,
+    "station_elev_m": 2441
+  },
+  "heavenly": {
+    "triplet": "518:CA:SNTL",
+    "name": "Heavenly Valley",
+    "distance_km": 2.36,
+    "station_elev_m": 2603
+  },
+  "northstar": {
+    "triplet": "834:CA:SNTL",
+    "name": "Truckee #2",
+    "distance_km": 6.19,
+    "station_elev_m": 1981
+  },
+  "crystal-mountain-wa": {
+    "triplet": "642:WA:SNTL",
+    "name": "Morse Lake",
+    "distance_km": 3.21,
+    "station_elev_m": 1646
+  },
+  "stevens-pass": {
+    "triplet": "791:WA:SNTL",
+    "name": "Stevens Pass",
+    "distance_km": 0.3,
+    "station_elev_m": 1201
+  },
+  "schweitzer": {
+    "triplet": "738:ID:SNTL",
+    "name": "Schweitzer Basin",
+    "distance_km": 1.79,
+    "station_elev_m": 1856
+  },
+  "whitefish-mountain": {
+    "triplet": "14A03:MT:SNOW",
+    "name": "Hell Roaring Divide",
+    "distance_km": 0.57,
+    "station_elev_m": 1823
+  },
+  "powder-mountain": {
+    "triplet": "1300:UT:SNTL",
+    "name": "Powder Mountain",
+    "distance_km": 2.08,
+    "station_elev_m": 2588
+  },
+  "stowe": {
+    "triplet": "2041:VT:SCAN",
+    "name": "Mount Mansfield",
+    "distance_km": 4.25,
+    "station_elev_m": 704
+  },
+  "jay-peak": {
+    "triplet": "2041:VT:SCAN",
+    "name": "Mount Mansfield",
+    "distance_km": 50.31,
+    "station_elev_m": 704
+  },
+  "stratton": {
+    "triplet": "2042:VT:SCAN",
+    "name": "Lye Brook",
+    "distance_km": 12.23,
+    "station_elev_m": 744
+  },
+  "loon-mountain": {
+    "triplet": "2069:NH:SCAN",
+    "name": "Hubbard Brook",
+    "distance_km": 13.0,
+    "station_elev_m": 451
+  },
+  "vail": {
+    "triplet": "842:CO:SNTL",
+    "name": "Vail Mountain",
+    "distance_km": 2.86,
+    "station_elev_m": 3136
+  },
+  "aspen-snowmass": {
+    "triplet": "1326:CO:SNTL",
+    "name": "Castle Peak",
+    "distance_km": 24.96,
+    "station_elev_m": 3508
+  },
+  "park-city": {
+    "triplet": "814:UT:SNTL",
+    "name": "Thaynes Canyon",
+    "distance_km": 3.76,
+    "station_elev_m": 2822
+  }
+}
