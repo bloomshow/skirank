@@ -18,6 +18,7 @@ type Action =
   | { type: "TOGGLE_REGION"; payload: string }
   | { type: "CLEAR_REGIONS" }
   | { type: "TOGGLE_SUBREGION"; payload: string }
+  | { type: "SET_SUBREGIONS"; payload: string[] }
   | { type: "SET_COUNTRY"; payload: string | undefined }
   | { type: "SET_WEIGHTS"; payload: WeightOverrides }
   | { type: "SET_VIEW"; payload: "list" | "map" }
@@ -54,6 +55,8 @@ function reducer(state: AppState, action: Action): AppState {
         : [...state.subregions, action.payload];
       return { ...state, subregions };
     }
+    case "SET_SUBREGIONS":
+      return { ...state, subregions: action.payload };
     case "SET_COUNTRY":
       return { ...state, country: action.payload };
     case "SET_WEIGHTS":

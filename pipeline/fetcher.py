@@ -230,6 +230,10 @@ async def fetch_batch(
         "timeformat": "iso8601",
     }
 
+    # Pass summit elevation so Open-Meteo samples at mountain altitude, not valley floor
+    if all(r.get("elevation_summit_m") for r in resorts):
+        params["elevation"] = ",".join(str(r["elevation_summit_m"]) for r in resorts)
+
     fetched_at = datetime.now(timezone.utc)
     resort_ids = [r["id"] for r in resorts]
 

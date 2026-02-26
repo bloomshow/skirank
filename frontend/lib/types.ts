@@ -81,6 +81,7 @@ export interface ResortDetail {
 export interface RegionEntry {
   region: string;
   subregions: string[];
+  subregion_counts: Record<string, number>;
   resort_count: number;
 }
 

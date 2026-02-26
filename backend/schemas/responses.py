@@ -94,6 +94,7 @@ class ResortDetail(BaseModel):
 class RegionEntry(BaseModel):
     region: str
     subregions: list[str]
+    subregion_counts: dict[str, int] = {}
     resort_count: int
 
 

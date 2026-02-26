@@ -28,15 +28,16 @@ async def list_regions(db: AsyncSession = Depends(get_db)):
     region_map: dict[str, dict] = {}
     for region, subregion, cnt in rows:
         if region not in region_map:
-            region_map[region] = {"subregions": set(), "count": 0}
+            region_map[region] = {"subregions": {}, "count": 0}
         if subregion:
-            region_map[region]["subregions"].add(subregion)
+            region_map[region]["subregions"][subregion] = region_map[region]["subregions"].get(subregion, 0) + cnt
         region_map[region]["count"] += cnt
 
     data = [
         RegionEntry(
             region=region,
-            subregions=sorted(v["subregions"]),
+            subregions=sorted(v["subregions"].keys()),
+            subregion_counts=v["subregions"],
             resort_count=v["count"],
         ).model_dump()
         for region, v in sorted(region_map.items())

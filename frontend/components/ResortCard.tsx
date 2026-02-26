@@ -57,6 +57,12 @@ function SnowSparkline({ days }: { days: ForecastSnowDay[] }) {
   );
 }
 
+function formatDepth(cm: number | null): string {
+  if (cm === null) return "—";
+  const inches = Math.round(cm / 2.54);
+  return `${cm}cm (${inches}")`;
+}
+
 interface ResortCardProps {
   entry: RankingEntry;
 }
@@ -100,9 +106,12 @@ export default function ResortCard({ entry }: ResortCardProps) {
 
           {/* Snapshot stats */}
           <div className="flex gap-4 mt-2 text-xs text-slate-600 flex-wrap">
-            <span>
+            <span className="flex items-center gap-1">
               <span className="text-slate-400">Base</span>{" "}
-              {snapshot.snow_depth_cm !== null ? `${snapshot.snow_depth_cm}cm` : "—"}
+              {formatDepth(snapshot.snow_depth_cm)}
+              {snapshot.snow_depth_cm !== null && snapshot.snow_depth_cm < 20 && (
+                <span className="bg-amber-100 text-amber-700 px-1.5 py-0.5 rounded text-xs">thin cover</span>
+              )}
             </span>
             <span>
               <span className="text-slate-400">New 72h</span>{" "}
