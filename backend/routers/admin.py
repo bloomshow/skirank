@@ -101,7 +101,20 @@ def _require_key(x_admin_key: str = Header(...)):
 async def run_migrate(x_admin_key: str = Header(...)):
     _require_key(x_admin_key)
     await init_db()
-    return {"status": "ok", "message": "Tables created (create_all ran successfully)"}
+
+    # Apply any missing columns via ALTER TABLE (idempotent via IF NOT EXISTS)
+    alter_stmts = [
+        "ALTER TABLE forecast_snapshots ADD COLUMN IF NOT EXISTS source VARCHAR(50)",
+        "ALTER TABLE resorts ADD COLUMN IF NOT EXISTS continent VARCHAR(50)",
+        "ALTER TABLE resorts ADD COLUMN IF NOT EXISTS ski_region VARCHAR(100)",
+    ]
+    from sqlalchemy import text
+    async with AsyncSessionLocal() as db:
+        for stmt in alter_stmts:
+            await db.execute(text(stmt))
+        await db.commit()
+
+    return {"status": "ok", "message": "Tables created and columns migrated successfully"}
 
 
 @router.post("/seed")
