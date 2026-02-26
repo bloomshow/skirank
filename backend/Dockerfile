@@ -2,12 +2,14 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
-COPY backend/requirements.txt .
+COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY backend/ ./backend/
-COPY pipeline/ ./pipeline/
+COPY . ./backend/
 COPY data/ ./data/
+
+# Make pipeline importable as top-level package
+RUN ln -s /app/backend/pipeline /app/pipeline
 
 EXPOSE 8000
 
