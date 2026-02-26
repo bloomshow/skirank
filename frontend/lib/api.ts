@@ -7,7 +7,8 @@ import type {
   ForecastDay,
 } from "./types";
 
-const rawBase = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:8000/api/v1";
+const rawBase =
+  process.env.NEXT_PUBLIC_API_BASE_URL || "https://skirank-production.up.railway.app";
 // Ensure the base URL always includes /api/v1 regardless of how the env var is set
 const BASE_URL = rawBase.endsWith("/api/v1")
   ? rawBase
