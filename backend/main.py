@@ -1,8 +1,11 @@
+import logging
 import os
 from contextlib import asynccontextmanager
 from datetime import datetime, timezone
 from typing import Optional
 
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
+from apscheduler.triggers.cron import CronTrigger
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -10,11 +13,42 @@ from backend.db import init_db
 from backend.routers import rankings, resorts, regions, admin
 from backend.schemas.responses import HealthResponse
 
+logger = logging.getLogger(__name__)
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     await init_db()
+
+    # Start daily pipeline scheduler
+    try:
+        from pipeline.scheduler import run_pipeline
+        from pipeline.config import PIPELINE_CRON_SCHEDULE
+        cron_parts = PIPELINE_CRON_SCHEDULE.split()
+        scheduler = AsyncIOScheduler()
+        scheduler.add_job(
+            run_pipeline,
+            CronTrigger(
+                minute=cron_parts[0],
+                hour=cron_parts[1],
+                day=cron_parts[2],
+                month=cron_parts[3],
+                day_of_week=cron_parts[4],
+                timezone="UTC",
+            ),
+            id="daily_pipeline",
+            replace_existing=True,
+        )
+        scheduler.start()
+        logger.info("Pipeline scheduler started. Schedule: %s", PIPELINE_CRON_SCHEDULE)
+    except Exception as exc:
+        logger.warning("Could not start pipeline scheduler: %s", exc)
+        scheduler = None
+
     yield
+
+    if scheduler:
+        scheduler.shutdown()
 
 
 app = FastAPI(
