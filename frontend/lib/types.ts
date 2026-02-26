@@ -32,6 +32,14 @@ export interface SnapshotSummary {
   wind_speed_kmh: number | null;
 }
 
+export interface MetricsSnapshot {
+  base_depth_cm: number | null;
+  new_snow_72h_cm: number | null;
+  forecast_snow_cm: number | null;
+  temperature_c: number | null;
+  wind_kmh: number | null;
+}
+
 export interface ForecastSnowDay {
   date: string;
   snowfall_cm: number | null;
@@ -48,6 +56,8 @@ export interface RankingEntry {
   forecast_sparkline: ForecastSnowDay[];
   forecast_source?: string | null;
   depth_source?: string | null;
+  metrics?: MetricsSnapshot | null;
+  position_delta?: number | null;
 }
 
 export interface RankingsMeta {
@@ -116,12 +126,21 @@ export interface HierarchyResponse {
 
 export type HorizonDays = 0 | 3 | 7 | 14;
 
-export interface WeightOverrides {
-  w_base_depth?: number;
-  w_fresh_snow?: number;
-  w_temperature?: number;
-  w_wind?: number;
+export interface ClientWeights {
+  base_depth: number;   // 0–10
+  fresh_snow: number;
+  forecast_snow: number;
+  temperature: number;
+  wind: number;
 }
+
+export const DEFAULT_CLIENT_WEIGHTS: ClientWeights = {
+  base_depth: 7,
+  fresh_snow: 9,
+  forecast_snow: 8,
+  temperature: 5,
+  wind: 3,
+};
 
 export interface RankingsFilters {
   horizon_days: HorizonDays;
@@ -131,6 +150,5 @@ export interface RankingsFilters {
   ski_region?: string[];
   country?: string[];
   min_elevation_m?: number;
-  weights?: WeightOverrides;
   sort?: "score" | "predicted_snow";
 }

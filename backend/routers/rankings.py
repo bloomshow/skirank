@@ -19,6 +19,7 @@ from backend.schemas.responses import (
     SubScores,
     SnapshotSummary,
     ForecastSnowDay,
+    MetricsSnapshot,
 )
 from backend.cache import cache_get, cache_set
 
@@ -293,6 +294,14 @@ async def get_rankings(
                 forecast_sparkline=sparklines.get(resort.id, []),
                 forecast_source=forecast_source,
                 depth_source=depth_source,
+                metrics=MetricsSnapshot(
+                    base_depth_cm=float(snapshot.snow_depth_cm) if snapshot and snapshot.snow_depth_cm else None,
+                    new_snow_72h_cm=float(snapshot.new_snow_72h_cm) if snapshot and snapshot.new_snow_72h_cm else None,
+                    forecast_snow_cm=float(predicted_snow_cm) if predicted_snow_cm is not None else None,
+                    temperature_c=float(snapshot.temperature_c) if snapshot and snapshot.temperature_c else None,
+                    wind_kmh=float(snapshot.wind_speed_kmh) if snapshot and snapshot.wind_speed_kmh else None,
+                ),
+                position_delta=None,
             )
         )
 

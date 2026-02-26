@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { AppProvider } from "../context/AppContext";
+import UnitsToggle from "../components/UnitsToggle";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,7 +26,7 @@ export default function RootLayout({
               <a href="/" className="text-xl font-bold text-blue-600 tracking-tight">
                 SkiRank
               </a>
-              <nav className="flex gap-5 text-sm text-slate-600">
+              <nav className="flex items-center gap-5 text-sm text-slate-600">
                 <a href="/rankings" className="hover:text-blue-600 transition-colors">
                   Rankings
                 </a>
@@ -35,6 +36,7 @@ export default function RootLayout({
                 <a href="/about" className="hover:text-blue-600 transition-colors">
                   About
                 </a>
+                <UnitsToggle />
               </nav>
             </div>
           </header>

@@ -8,6 +8,7 @@ import type {
   ForecastDay,
 } from "./types";
 
+
 const rawBase =
   process.env.NEXT_PUBLIC_API_BASE_URL || "https://skirank-production.up.railway.app";
 // Ensure the base URL always includes /api/v1 regardless of how the env var is set
@@ -36,9 +37,9 @@ async function apiFetch<T>(path: string, params?: Record<string, string | number
 export async function fetchRankings(
   filters: RankingsFilters,
   page = 1,
-  per_page = 50
+  per_page = 200
 ): Promise<RankingsResponse> {
-  const { horizon_days, region, subregion, continent, ski_region, country, min_elevation_m, weights, sort } = filters;
+  const { horizon_days, region, subregion, continent, ski_region, country, min_elevation_m, sort } = filters;
   const params: Record<string, string | number | undefined> = {
     horizon_days,
     page,
@@ -46,7 +47,6 @@ export async function fetchRankings(
     ...(sort && { sort }),
     ...(continent && { continent }),
     ...(min_elevation_m !== undefined && { min_elevation_m }),
-    ...weights,
   };
   const url = new URL(`${BASE_URL}/rankings`);
   Object.entries(params).forEach(([k, v]) => {

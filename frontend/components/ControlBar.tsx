@@ -140,12 +140,12 @@ export default function ControlBar({ hierarchy, totalResorts }: ControlBarProps)
             ))}
           </div>
 
-          {/* Weights toggle */}
+          {/* Preferences toggle */}
           <button
             onClick={() => setShowWeights((p) => !p)}
             className="px-3 py-1.5 text-sm border border-slate-200 rounded-lg bg-white text-slate-600 hover:bg-slate-50 transition-colors"
           >
-            {showWeights ? "Hide weights" : "Adjust weights"}
+            {showWeights ? "Hide preferences" : "What matters to you?"}
           </button>
         </div>
 

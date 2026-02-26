@@ -47,6 +47,14 @@ class ForecastSnowDay(BaseModel):
     snowfall_cm: Optional[float]
 
 
+class MetricsSnapshot(BaseModel):
+    base_depth_cm: Optional[float] = None
+    new_snow_72h_cm: Optional[float] = None
+    forecast_snow_cm: Optional[float] = None
+    temperature_c: Optional[float] = None
+    wind_kmh: Optional[float] = None
+
+
 class RankingEntry(BaseModel):
     rank: int
     resort: ResortBase
@@ -58,6 +66,8 @@ class RankingEntry(BaseModel):
     forecast_sparkline: list[ForecastSnowDay] = []
     forecast_source: Optional[str] = None   # 'nws_hrrr' | 'open_meteo'
     depth_source: Optional[str] = None      # 'synoptic_station' | 'open_meteo'
+    metrics: Optional[MetricsSnapshot] = None
+    position_delta: Optional[int] = None
 
 
 class RankingsMeta(BaseModel):

@@ -1,20 +1,25 @@
 "use client";
 
 import React, { createContext, useContext, useReducer, useEffect } from "react";
-import type { HorizonDays, WeightOverrides, RankingsFilters } from "../lib/types";
+import type { HorizonDays, RankingsFilters, ClientWeights } from "../lib/types";
+import { DEFAULT_CLIENT_WEIGHTS } from "../lib/types";
+import type { UnitSystem } from "../lib/units";
+import { detectUnitSystem } from "../lib/units";
 
 interface AppState {
   horizon: HorizonDays;
-  // Legacy region filters (kept for backward compat, no-op in new UI)
+  // Legacy region filters (kept for backward compat)
   regions: string[];
   subregions: string[];
-  // New hierarchy filters
-  continent: string | null;   // slug, null = All
-  skiRegions: string[];        // selected ski_region slugs
-  countries: string[];         // selected country codes
+  // Hierarchy filters
+  continent: string | null;
+  skiRegions: string[];
+  countries: string[];
   filterMode: "ski_region" | "country";
-  // Other prefs
-  weights: WeightOverrides;
+  // Ranking preferences (client-side, 0–10)
+  clientWeights: ClientWeights;
+  // Display
+  unitSystem: UnitSystem;
   view: "list" | "map";
   sort: "score" | "predicted_snow";
 }
@@ -32,10 +37,11 @@ type Action =
   | { type: "SET_COUNTRIES"; payload: string[] }
   | { type: "SET_FILTER_MODE"; payload: "ski_region" | "country" }
   | { type: "CLEAR_HIERARCHY" }
-  | { type: "SET_WEIGHTS"; payload: WeightOverrides }
+  | { type: "SET_CLIENT_WEIGHT"; key: keyof ClientWeights; value: number }
+  | { type: "RESET_CLIENT_WEIGHTS" }
+  | { type: "SET_UNITS"; payload: UnitSystem }
   | { type: "SET_VIEW"; payload: "list" | "map" }
-  | { type: "SET_SORT"; payload: "score" | "predicted_snow" }
-  | { type: "RESET_WEIGHTS" };
+  | { type: "SET_SORT"; payload: "score" | "predicted_snow" };
 
 const DEFAULT_STATE: AppState = {
   horizon: 0,
@@ -45,7 +51,8 @@ const DEFAULT_STATE: AppState = {
   skiRegions: [],
   countries: [],
   filterMode: "ski_region",
-  weights: {},
+  clientWeights: DEFAULT_CLIENT_WEIGHTS,
+  unitSystem: "metric", // overridden on mount by detectUnitSystem()
   view: "list",
   sort: "score",
 };
@@ -73,12 +80,7 @@ function reducer(state: AppState, action: Action): AppState {
     case "SET_SUBREGIONS":
       return { ...state, subregions: action.payload };
     case "SET_CONTINENT":
-      return {
-        ...state,
-        continent: action.payload,
-        skiRegions: [],
-        countries: [],
-      };
+      return { ...state, continent: action.payload, skiRegions: [], countries: [] };
     case "TOGGLE_SKI_REGION": {
       const already = state.skiRegions.includes(action.payload);
       const skiRegions = already
@@ -101,10 +103,15 @@ function reducer(state: AppState, action: Action): AppState {
       return { ...state, filterMode: action.payload, skiRegions: [], countries: [] };
     case "CLEAR_HIERARCHY":
       return { ...state, continent: null, skiRegions: [], countries: [] };
-    case "SET_WEIGHTS":
-      return { ...state, weights: { ...state.weights, ...action.payload } };
-    case "RESET_WEIGHTS":
-      return { ...state, weights: {} };
+    case "SET_CLIENT_WEIGHT":
+      return {
+        ...state,
+        clientWeights: { ...state.clientWeights, [action.key]: action.value },
+      };
+    case "RESET_CLIENT_WEIGHTS":
+      return { ...state, clientWeights: DEFAULT_CLIENT_WEIGHTS };
+    case "SET_UNITS":
+      return { ...state, unitSystem: action.payload };
     case "SET_VIEW":
       return { ...state, view: action.payload };
     case "SET_SORT":
@@ -122,7 +129,7 @@ interface AppContextValue {
 
 const AppContext = createContext<AppContextValue | null>(null);
 
-const STORAGE_KEY = "skirank_prefs";
+const STORAGE_KEY = "skirank_prefs_v14";
 
 export function AppProvider({ children }: { children: React.ReactNode }) {
   const [state, dispatch] = useReducer(reducer, DEFAULT_STATE, (init) => {
@@ -137,22 +144,33 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     return init;
   });
 
-  // Persist user preferences on change (weights + horizon only; hierarchy comes from URL)
+  // Auto-detect unit system on first mount (only if not already persisted)
+  useEffect(() => {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (!stored) {
+      dispatch({ type: "SET_UNITS", payload: detectUnitSystem() });
+    }
+  }, []);
+
+  // Persist preferences (weights + units + horizon)
   useEffect(() => {
     try {
       localStorage.setItem(
         STORAGE_KEY,
-        JSON.stringify({ horizon: state.horizon, weights: state.weights })
+        JSON.stringify({
+          horizon: state.horizon,
+          clientWeights: state.clientWeights,
+          unitSystem: state.unitSystem,
+        })
       );
     } catch {}
-  }, [state.horizon, state.weights]);
+  }, [state.horizon, state.clientWeights, state.unitSystem]);
 
   const filters: RankingsFilters = {
     horizon_days: state.horizon,
     continent: state.continent ?? undefined,
     ski_region: state.skiRegions.length > 0 ? state.skiRegions : undefined,
     country: state.countries.length > 0 ? state.countries : undefined,
-    weights: Object.keys(state.weights).length > 0 ? state.weights : undefined,
     sort: state.sort !== "score" ? state.sort : undefined,
   };
 
