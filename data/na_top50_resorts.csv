@@ -1,0 +1,48 @@
+name,slug,country,region,subregion,latitude,longitude,elevation_base_m,elevation_summit_m,aspect,vertical_drop_m,num_runs,season_start_month,season_end_month,timezone,website_url
+Jackson Hole,jackson-hole,US,North America,Wyoming,43.5875,-110.8279,1924,3185,NW,1261,116,11,4,America/Denver,https://www.jacksonhole.com
+Mammoth Mountain,mammoth-mountain,US,North America,California,37.6308,-119.0326,2424,3369,SW,945,150,11,6,America/Los_Angeles,https://www.mammothmountain.com
+Big Sky,big-sky,US,North America,Montana,45.2863,-111.4015,2090,3403,N,1313,300,11,4,America/Denver,https://www.bigskyresort.com
+Steamboat,steamboat,US,North America,Colorado,40.4572,-106.8044,2103,3221,N,1118,169,11,4,America/Denver,https://www.steamboat.com
+Sun Valley,sun-valley,US,North America,Idaho,43.6961,-114.3517,1752,2793,NW,1041,121,11,4,America/Denver,https://www.sunvalley.com
+Telluride,telluride,US,North America,Colorado,37.9363,-107.8540,2660,3943,N,1283,148,11,4,America/Denver,https://www.telluride.com
+Breckenridge,breckenridge,US,North America,Colorado,39.4817,-106.0384,2926,3963,N,1037,187,11,4,America/Denver,https://www.breckenridge.com
+Keystone,keystone,US,North America,Colorado,39.6064,-105.9483,2835,3658,N,823,135,10,4,America/Denver,https://www.keystoneresort.com
+Copper Mountain,copper-mountain,US,North America,Colorado,39.5022,-106.1497,2927,3753,N,826,163,11,4,America/Denver,https://www.coppercolorado.com
+Crested Butte,crested-butte,US,North America,Colorado,38.8978,-106.9654,2857,3706,NE,849,121,11,4,America/Denver,https://www.skicb.com
+Taos Ski Valley,taos-ski-valley,US,North America,New Mexico,36.5953,-105.4452,2804,3804,N,1000,110,11,4,America/Denver,https://www.skitaos.com
+Alta,alta,US,North America,Utah,40.5881,-111.6378,2601,3216,N,615,116,11,4,America/Denver,https://www.alta.com
+Snowbird,snowbird,US,North America,Utah,40.5830,-111.6558,2469,3352,N,883,169,11,5,America/Denver,https://www.snowbird.com
+Deer Valley,deer-valley,US,North America,Utah,40.6374,-111.4783,2103,2918,NE,815,103,12,4,America/Denver,https://www.deervalley.com
+Solitude Mountain,solitude-mountain,US,North America,Utah,40.6199,-111.5919,2445,3280,N,835,82,11,4,America/Denver,https://www.solitudemountain.com
+Brighton,brighton,US,North America,Utah,40.5985,-111.5831,2664,3264,N,600,66,11,4,America/Denver,https://www.brightonresort.com
+Snowbasin,snowbasin,US,North America,Utah,41.2158,-111.8566,1982,2927,N,945,107,12,4,America/Denver,https://www.snowbasin.com
+Arapahoe Basin,arapahoe-basin,US,North America,Colorado,39.6428,-105.8714,3286,3979,E,693,147,10,6,America/Denver,https://www.arapahoebasin.com
+Winter Park,winter-park,US,North America,Colorado,39.8868,-105.7625,2744,3677,N,933,166,11,4,America/Denver,https://www.winterparkresort.com
+Loveland,loveland-ski,US,North America,Colorado,39.6798,-105.8977,3201,3695,N,494,94,10,4,America/Denver,https://www.skiloveland.com
+Purgatory,purgatory,US,North America,Colorado,37.6286,-107.8642,2787,3355,N,568,105,11,4,America/Denver,https://www.purgatoryresort.com
+Palisades Tahoe,palisades-tahoe,US,North America,California,39.1969,-120.2350,1869,2762,N,893,170,11,5,America/Los_Angeles,https://www.palisadestahoe.com
+Heavenly,heavenly,US,North America,California,38.9350,-119.9400,1997,3061,SW,1064,97,11,4,America/Los_Angeles,https://www.skiheavenly.com
+Northstar,northstar,US,North America,California,39.2742,-120.1210,1929,2624,NW,695,100,11,4,America/Los_Angeles,https://www.northstarcalifornia.com
+Mt. Bachelor,mt-bachelor,US,North America,Oregon,43.9791,-121.6878,1721,2764,S,1001,101,11,5,America/Los_Angeles,https://www.mtbachelor.com
+Crystal Mountain,crystal-mountain-wa,US,North America,Washington,46.9341,-121.4741,1219,2278,NW,1046,85,11,4,America/Los_Angeles,https://www.crystalmountainresort.com
+Stevens Pass,stevens-pass,US,North America,Washington,47.7447,-121.0895,1228,1790,N,562,37,11,4,America/Los_Angeles,https://www.stevenspass.com
+Schweitzer,schweitzer,US,North America,Idaho,48.3632,-116.6215,1341,2040,N,699,92,11,4,America/Los_Angeles,https://www.schweitzer.com
+Whitefish Mountain,whitefish-mountain,US,North America,Montana,48.4913,-114.3577,1330,2093,N,763,105,12,4,America/Denver,https://www.skiwhitefish.com
+Powder Mountain,powder-mountain,US,North America,Utah,41.3891,-111.7820,2200,2784,N,584,168,12,4,America/Denver,https://www.powdermountain.com
+Killington,killington,US,North America,Vermont,43.6045,-72.8201,357,1293,N,936,155,10,5,America/New_York,https://www.killington.com
+Stowe,stowe,US,North America,Vermont,44.5303,-72.7814,417,1339,N,718,116,11,4,America/New_York,https://www.stowe.com
+Sugarloaf,sugarloaf,US,North America,Maine,45.0313,-70.3131,472,1292,NW,820,162,11,4,America/New_York,https://www.sugarloaf.com
+Sunday River,sunday-river,US,North America,Maine,44.4701,-70.8565,302,947,N,645,135,11,4,America/New_York,https://www.sundayriver.com
+Jay Peak,jay-peak,US,North America,Vermont,44.9261,-72.5140,396,1200,N,610,78,11,4,America/New_York,https://www.jaypeakresort.com
+Stratton,stratton,US,North America,Vermont,43.1118,-72.9082,677,1189,N,512,97,11,4,America/New_York,https://www.stratton.com
+Loon Mountain,loon-mountain,US,North America,New Hampshire,44.0390,-71.6237,524,1065,N,541,61,11,4,America/New_York,https://www.loonmtn.com
+Revelstoke,revelstoke,CA,North America,British Columbia,51.0568,-118.1594,534,2225,N,1713,95,12,4,America/Vancouver,https://www.revelstokemountainresort.com
+Banff Sunshine,banff-sunshine,CA,North America,Alberta,51.1188,-115.7614,1660,2730,N,1070,107,11,5,America/Edmonton,https://www.skibanff.com
+Lake Louise,lake-louise,CA,North America,Alberta,51.4254,-116.1773,1646,2637,N,991,145,11,5,America/Edmonton,https://www.skilouise.com
+Fernie Alpine Resort,fernie,CA,North America,British Columbia,49.4616,-115.0777,1067,2134,NE,1067,148,12,4,America/Edmonton,https://www.skifernie.com
+Kicking Horse,kicking-horse,CA,North America,British Columbia,51.2988,-117.0479,1191,2450,N,1260,120,12,4,America/Edmonton,https://www.kickinghorseresort.com
+Big White,big-white,CA,North America,British Columbia,49.7207,-118.9413,1509,2319,N,777,118,11,4,America/Vancouver,https://www.bigwhite.com
+Silver Star,silver-star,CA,North America,British Columbia,50.3630,-119.0565,1155,1915,N,760,115,11,4,America/Vancouver,https://www.skisilverstar.com
+Sun Peaks,sun-peaks,CA,North America,British Columbia,50.8817,-119.8833,1255,2080,NE,882,137,12,4,America/Vancouver,https://www.sunpeaksresort.com
+Red Mountain,red-mountain,CA,North America,British Columbia,49.0980,-117.7480,1148,1875,N,727,110,12,4,America/Vancouver,https://www.ski-red.com
+Mont-Tremblant,mont-tremblant,CA,North America,Quebec,46.2120,-74.5824,234,875,N,645,102,11,4,America/Toronto,https://www.tremblant.ca

@@ -1,0 +1,104 @@
+export interface Resort {
+  id: string;
+  name: string;
+  slug: string;
+  country: string | null;
+  region: string | null;
+  subregion: string | null;
+  latitude: number;
+  longitude: number;
+  elevation_base_m: number | null;
+  elevation_summit_m: number | null;
+  aspect: string | null;
+  vertical_drop_m: number | null;
+  num_runs: number | null;
+  website_url: string | null;
+}
+
+export interface SubScores {
+  base_depth: number | null;
+  fresh_snow: number | null;
+  temperature: number | null;
+  wind: number | null;
+  forecast: number | null;
+}
+
+export interface SnapshotSummary {
+  snow_depth_cm: number | null;
+  new_snow_72h_cm: number | null;
+  temperature_c: number | null;
+  wind_speed_kmh: number | null;
+}
+
+export interface ForecastSnowDay {
+  date: string;
+  snowfall_cm: number | null;
+}
+
+export interface RankingEntry {
+  rank: number;
+  resort: Resort;
+  score: number | null;
+  sub_scores: SubScores;
+  snapshot: SnapshotSummary;
+  stale_data: boolean;
+  predicted_snow_cm: number | null;
+  forecast_sparkline: ForecastSnowDay[];
+}
+
+export interface RankingsMeta {
+  total: number;
+  page: number;
+  per_page: number;
+  horizon_days: number;
+}
+
+export interface RankingsResponse {
+  meta: RankingsMeta;
+  generated_at: string;
+  results: RankingEntry[];
+}
+
+export interface ForecastDay {
+  forecast_date: string;
+  snowfall_cm: number | null;
+  temperature_max_c: number | null;
+  temperature_min_c: number | null;
+  wind_speed_max_kmh: number | null;
+  precipitation_prob_pct: number | null;
+  weather_code: number | null;
+  confidence_score: number | null;
+}
+
+export interface ResortDetail {
+  resort: Resort;
+  current_score: number | null;
+  sub_scores: SubScores;
+  snapshot: SnapshotSummary;
+  forecast: ForecastDay[];
+}
+
+export interface RegionEntry {
+  region: string;
+  subregions: string[];
+  resort_count: number;
+}
+
+export type HorizonDays = 0 | 3 | 7 | 14;
+
+export interface WeightOverrides {
+  w_base_depth?: number;
+  w_fresh_snow?: number;
+  w_temperature?: number;
+  w_wind?: number;
+}
+
+export interface RankingsFilters {
+  horizon_days: HorizonDays;
+  region?: string[];
+  subregion?: string[];
+  country?: string;
+  min_elevation_m?: number;
+  weights?: WeightOverrides;
+  sort?: "score" | "predicted_snow";
+}

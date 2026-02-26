@@ -1,0 +1,201 @@
+name,slug,country,region,subregion,latitude,longitude,elevation_base_m,elevation_summit_m,aspect,vertical_drop_m,num_runs,season_start_month,season_end_month,timezone,website_url
+Vail,vail,US,Rocky Mountains,Colorado,39.6403,-106.3742,2457,3527,S,1070,195,11,4,America/Denver,https://www.vail.com
+Aspen Snowmass,aspen-snowmass,US,Rocky Mountains,Colorado,39.1881,-106.8223,2474,3813,N,1339,362,11,4,America/Denver,https://www.aspensnowmass.com
+Breckenridge,breckenridge,US,Rocky Mountains,Colorado,39.4817,-106.0684,2926,3962,S,1036,187,11,4,America/Denver,https://www.breckenridge.com
+Telluride,telluride,US,Rocky Mountains,Colorado,37.9375,-107.8544,2657,4115,N,1225,148,11,4,America/Denver,https://www.telluride.com
+Steamboat,steamboat,US,Rocky Mountains,Colorado,40.4566,-106.8044,2103,3221,S,1118,169,11,4,America/Denver,https://www.steamboat.com
+Arapahoe Basin,arapahoe-basin,US,Rocky Mountains,Colorado,39.6426,-105.8715,3286,4006,E,720,148,10,6,America/Denver,https://www.arapahoebasin.com
+Keystone,keystone,US,Rocky Mountains,Colorado,39.6067,-105.9450,2835,3658,S,823,135,11,4,America/Denver,https://www.keystoneresort.com
+Crested Butte,crested-butte,US,Rocky Mountains,Colorado,38.8973,-106.9645,2857,3707,E,850,121,11,4,America/Denver,https://www.skicrestedbutte.com
+Copper Mountain,copper-mountain,US,Rocky Mountains,Colorado,39.5020,-106.1534,2927,3752,S,825,149,11,4,America/Denver,https://www.coppercolorado.com
+Loveland,loveland,US,Rocky Mountains,Colorado,39.6797,-105.8983,3226,3787,S,561,94,10,4,America/Denver,https://www.skiloveland.com
+Winter Park,winter-park,US,Rocky Mountains,Colorado,39.8864,-105.7625,2752,3978,S,1226,167,11,4,America/Denver,https://www.winterparkresort.com
+Purgatory,purgatory,US,Rocky Mountains,Colorado,37.6285,-107.8159,2609,3264,NE,655,105,11,4,America/Denver,https://www.purgatoryresort.com
+Wolf Creek,wolf-creek,US,Rocky Mountains,Colorado,37.4759,-106.7938,2987,3658,S,671,77,10,4,America/Denver,https://www.wolfcreekski.com
+Monarch Mountain,monarch-mountain,US,Rocky Mountains,Colorado,38.5159,-106.3322,3108,3625,S,517,63,11,4,America/Denver,https://www.skimonarch.com
+Eldora Mountain,eldora-mountain,US,Rocky Mountains,Colorado,39.9372,-105.5855,2668,3307,S,640,53,11,4,America/Denver,https://www.eldora.com
+Park City Mountain,park-city-mountain,US,Rocky Mountains,Utah,40.6514,-111.5080,2103,3057,S,954,330,11,4,America/Denver,https://www.parkcitymountain.com
+Deer Valley,deer-valley,US,Rocky Mountains,Utah,40.6377,-111.4778,2026,2918,S,892,103,12,4,America/Denver,https://www.deervalley.com
+Alta,alta,US,Rocky Mountains,Utah,40.5883,-111.6385,2421,3216,N,795,116,11,4,America/Denver,https://www.alta.com
+Snowbird,snowbird,US,Rocky Mountains,Utah,40.5830,-111.6558,2365,3352,N,987,169,11,5,America/Denver,https://www.snowbird.com
+Solitude,solitude,US,Rocky Mountains,Utah,40.6193,-111.5920,2450,3099,N,649,82,11,4,America/Denver,https://www.skisolitude.com
+Brighton,brighton,US,Rocky Mountains,Utah,40.5975,-111.5826,2548,3107,N,559,66,11,4,America/Denver,https://www.brightonresort.com
+Snowbasin,snowbasin,US,Rocky Mountains,Utah,41.2162,-111.8569,1795,2928,NE,1133,107,11,4,America/Denver,https://www.snowbasin.com
+Brian Head,brian-head,US,Rocky Mountains,Utah,37.6968,-112.8499,2877,3441,N,564,71,11,4,America/Denver,https://www.brianhead.com
+Beaver Mountain,beaver-mountain,US,Rocky Mountains,Utah,41.9685,-111.5414,2123,2560,N,437,45,11,3,America/Denver,https://www.skithebeav.com
+Jackson Hole,jackson-hole,US,Rocky Mountains,Wyoming,43.5875,-110.8272,1924,3185,N,1261,131,11,4,America/Denver,https://www.jacksonhole.com
+Grand Targhee,grand-targhee,US,Rocky Mountains,Wyoming,43.7888,-110.9428,2153,3021,N,868,95,11,4,America/Denver,https://www.grandtarghee.com
+Big Sky,big-sky,US,Rocky Mountains,Montana,45.2868,-111.4015,2134,3404,S,1270,317,11,4,America/Denver,https://www.bigskyresort.com
+Whitefish Mountain,whitefish-mountain,US,Rocky Mountains,Montana,48.4860,-114.3531,1341,2153,W,812,105,11,4,America/Denver,https://www.skiwhitefish.com
+Red Lodge Mountain,red-lodge-mountain,US,Rocky Mountains,Montana,45.1854,-109.3112,1831,2807,S,976,70,11,4,America/Denver,https://www.redlodgemountain.com
+Sun Valley,sun-valley,US,Rocky Mountains,Idaho,43.6957,-114.3516,1762,2792,N,1030,121,11,4,America/Boise,https://www.sunvalley.com
+Schweitzer Mountain,schweitzer-mountain,US,Rocky Mountains,Idaho,48.3683,-116.6249,1273,2106,N,833,92,11,4,America/Los_Angeles,https://www.schweitzer.com
+Bogus Basin,bogus-basin,US,Rocky Mountains,Idaho,43.7635,-116.1012,1613,2009,S,396,54,11,4,America/Boise,https://www.bogusbasin.org
+Brundage Mountain,brundage-mountain,US,Rocky Mountains,Idaho,44.9988,-116.4567,1616,2178,N,562,46,11,4,America/Boise,https://www.brundage.com
+Tamarack Resort,tamarack-resort,US,Rocky Mountains,Idaho,44.6982,-116.1097,1524,2166,N,645,45,11,4,America/Boise,https://www.tamarackidaho.com
+Mammoth Mountain,mammoth-mountain,US,Sierra Nevada,California,37.6308,-119.0326,2424,3372,SW,948,150,11,6,America/Los_Angeles,https://www.mammothmountain.com
+Heavenly Mountain,heavenly-mountain,US,Sierra Nevada,California,38.9353,-119.9400,1941,3080,S,1052,97,11,4,America/Los_Angeles,https://www.skiheavenly.com
+Palisades Tahoe,palisades-tahoe,US,Sierra Nevada,California,39.1965,-120.2357,1838,2760,N,922,175,11,4,America/Los_Angeles,https://www.palisadestahoe.com
+Northstar California,northstar-california,US,Sierra Nevada,California,39.2575,-120.1213,1896,2625,N,729,100,11,4,America/Los_Angeles,https://www.northstarcalifornia.com
+Kirkwood Mountain,kirkwood-mountain,US,Sierra Nevada,California,38.6840,-120.0652,2378,2954,N,748,86,11,4,America/Los_Angeles,https://www.kirkwood.com
+Sierra-at-Tahoe,sierra-at-tahoe,US,Sierra Nevada,California,38.8004,-120.0803,1899,2697,NW,530,46,11,4,America/Los_Angeles,https://www.sierraattahoe.com
+Sugar Bowl,sugar-bowl,US,Sierra Nevada,California,39.2991,-120.3582,2088,2681,N,593,101,11,4,America/Los_Angeles,https://www.sugarbowl.com
+June Mountain,june-mountain,US,Sierra Nevada,California,37.7699,-119.0882,2325,3138,SE,813,35,12,4,America/Los_Angeles,https://www.junemountain.com
+Bear Valley,bear-valley,US,Sierra Nevada,California,38.4648,-120.0473,2194,2640,S,458,75,12,4,America/Los_Angeles,https://www.bearvalley.com
+Mt. Rose Ski Tahoe,mt-rose-ski-tahoe,US,Sierra Nevada,Nevada,39.3137,-119.8942,2374,3280,NW,907,61,11,4,America/Los_Angeles,https://www.mtrose.com
+Stowe Mountain Resort,stowe-mountain-resort,US,Northeast,Vermont,44.5309,-72.7820,388,1339,N,951,116,11,4,America/New_York,https://www.stowe.com
+Killington,killington,US,Northeast,Vermont,43.6404,-72.8204,330,1292,S,962,155,10,5,America/New_York,https://www.killington.com
+Sugarbush,sugarbush,US,Northeast,Vermont,44.1372,-72.8890,381,1232,N,851,111,11,4,America/New_York,https://www.sugarbush.com
+Jay Peak,jay-peak,US,Northeast,Vermont,44.9288,-72.5271,396,1072,N,676,78,11,4,America/New_York,https://www.jaypeakresort.com
+Okemo Mountain,okemo-mountain,US,Northeast,Vermont,43.4048,-72.7162,293,1131,S,838,120,11,4,America/New_York,https://www.okemo.com
+Mad River Glen,mad-river-glen,US,Northeast,Vermont,44.2013,-72.9250,457,1121,N,664,53,11,4,America/New_York,https://www.madriverglen.com
+Smugglers Notch,smugglers-notch,US,Northeast,Vermont,44.5646,-72.7826,396,1162,N,766,78,11,4,America/New_York,https://www.smuggs.com
+Bretton Woods,bretton-woods,US,Northeast,New Hampshire,44.2550,-71.4428,537,1230,S,693,101,11,4,America/New_York,https://www.brettonwoods.com
+Loon Mountain,loon-mountain,US,Northeast,New Hampshire,44.0390,-71.6254,399,1043,S,644,61,11,4,America/New_York,https://www.loonmtn.com
+Waterville Valley,waterville-valley,US,Northeast,New Hampshire,43.9695,-71.5091,524,1284,S,760,52,11,4,America/New_York,https://www.waterville.com
+Cannon Mountain,cannon-mountain,US,Northeast,New Hampshire,44.1574,-71.6983,544,1239,E,695,72,11,4,America/New_York,https://www.cannonmt.com
+Whiteface Mountain,whiteface-mountain,US,Northeast,New York,44.3659,-73.9022,340,1483,E,1143,87,11,4,America/New_York,https://www.whiteface.com
+Gore Mountain,gore-mountain,US,Northeast,New York,43.6719,-74.0127,402,1103,E,701,87,11,4,America/New_York,https://www.goremountain.com
+Hunter Mountain,hunter-mountain,US,Northeast,New York,42.2001,-74.2279,372,1001,N,629,67,11,4,America/New_York,https://www.huntermtn.com
+Crystal Mountain,crystal-mountain,US,Pacific Northwest,Washington,46.9345,-121.4746,1113,2201,SW,1088,85,11,4,America/Los_Angeles,https://www.crystalmountainresort.com
+Stevens Pass,stevens-pass,US,Pacific Northwest,Washington,47.7452,-121.0884,1245,1847,NW,602,37,11,4,America/Los_Angeles,https://www.stevenspass.com
+Mt. Baker,mt-baker,US,Pacific Northwest,Washington,48.8655,-121.6642,488,1536,S,1048,38,11,4,America/Los_Angeles,https://www.mtbaker.us
+White Pass,white-pass,US,Pacific Northwest,Washington,46.6401,-121.3918,1325,2075,N,750,42,11,4,America/Los_Angeles,https://www.skiwhitepass.com
+Mt. Hood Meadows,mt-hood-meadows,US,Pacific Northwest,Oregon,45.3311,-121.6646,1280,2267,S,987,87,11,4,America/Los_Angeles,https://www.skihood.com
+Timberline Lodge,timberline-lodge,US,Pacific Northwest,Oregon,45.3308,-121.7109,1341,2731,S,1158,41,10,6,America/Los_Angeles,https://www.timberlinelodge.com
+Mt. Bachelor,mt-bachelor,US,Pacific Northwest,Oregon,43.9798,-121.6880,1712,2764,N,1052,71,11,5,America/Los_Angeles,https://www.mtbachelor.com
+Taos Ski Valley,taos-ski-valley,US,Rocky Mountains,New Mexico,36.5952,-105.4486,2804,3804,N,1000,110,11,4,America/Denver,https://www.skitaos.com
+Ski Santa Fe,ski-santa-fe,US,Rocky Mountains,New Mexico,35.7906,-105.8310,3101,3962,NW,861,44,11,4,America/Denver,https://www.skisantafe.com
+Alyeska Resort,alyeska-resort,US,Alaska,Alaska,60.9697,-149.0989,103,1208,N,1005,76,11,4,America/Anchorage,https://www.alyeskaresort.com
+Beech Mountain,beech-mountain,US,Southeast,North Carolina,36.1979,-81.9010,1368,1620,S,213,17,11,3,America/New_York,https://www.beechmtn.com
+Sugarloaf,sugarloaf,US,Northeast,Maine,45.0313,-70.3128,384,1291,SW,858,162,11,4,America/New_York,https://www.sugarloaf.com
+Sunday River,sunday-river,US,Northeast,Maine,44.4698,-70.8565,293,1071,S,701,135,11,4,America/New_York,https://www.sundayriver.com
+Mountain High,mountain-high,US,Southern California,California,34.3729,-117.6993,1830,2548,N,670,59,12,3,America/Los_Angeles,https://www.mthigh.com
+Diamond Peak,diamond-peak,US,Sierra Nevada,Nevada,39.2527,-119.9748,1969,2682,SE,503,30,11,4,America/Los_Angeles,https://www.diamondpeak.com
+Mt. Spokane,mt-spokane,US,Pacific Northwest,Washington,47.9196,-117.1231,771,1664,N,597,41,11,4,America/Los_Angeles,https://www.mtspokane.com
+Ski Apache,ski-apache,US,Rocky Mountains,New Mexico,33.3982,-105.8001,2716,3650,N,756,55,11,4,America/Denver,https://www.skiapache.com
+Whistler Blackcomb,whistler-blackcomb,CA,Rocky Mountains,British Columbia,50.1163,-122.9574,652,2182,N,1530,200,11,5,America/Vancouver,https://www.whistlerblackcomb.com
+Sun Peaks,sun-peaks,CA,Rocky Mountains,British Columbia,50.8850,-119.8778,1255,2152,S,897,121,11,4,America/Vancouver,https://www.sunpeaksresort.com
+Big White,big-white,CA,Rocky Mountains,British Columbia,49.7165,-118.9307,1510,2319,S,777,119,11,4,America/Vancouver,https://www.bigwhite.com
+Silver Star,silver-star,CA,Rocky Mountains,British Columbia,50.3616,-119.0594,1158,1915,N,757,132,11,4,America/Vancouver,https://www.skisilverstar.com
+Revelstoke Mountain,revelstoke-mountain,CA,Rocky Mountains,British Columbia,50.9680,-118.1667,540,2225,N,1713,73,12,4,America/Vancouver,https://www.revelstokemountainresort.com
+Fernie Alpine,fernie-alpine,CA,Rocky Mountains,British Columbia,49.4594,-115.0895,1068,2133,NE,1065,142,11,4,America/Vancouver,https://www.skifernie.com
+Kicking Horse,kicking-horse,CA,Rocky Mountains,British Columbia,51.2951,-117.0545,1189,2450,N,1261,120,11,4,America/Vancouver,https://www.kickinghorseresort.com
+Panorama Mountain,panorama-mountain,CA,Rocky Mountains,British Columbia,50.4588,-116.2375,1158,2427,E,1219,140,12,4,America/Vancouver,https://www.panoramaresort.com
+Mt. Washington BC,mt-washington-bc,CA,Pacific Northwest,British Columbia,49.7084,-125.3045,1135,1588,N,505,81,11,4,America/Vancouver,https://www.mtwashington.ca
+Apex Mountain,apex-mountain,CA,Rocky Mountains,British Columbia,49.3866,-119.9087,1530,2178,S,648,67,11,4,America/Vancouver,https://www.apexresort.com
+Whitewater,whitewater,CA,Rocky Mountains,British Columbia,49.5162,-117.2162,1246,1949,N,703,81,11,4,America/Vancouver,https://www.skiwhitewater.com
+Lake Louise Ski Resort,lake-louise,CA,Rocky Mountains,Alberta,51.4467,-116.1742,1646,2637,SE,1000,145,11,4,America/Edmonton,https://www.skilouise.com
+Banff Sunshine,banff-sunshine,CA,Rocky Mountains,Alberta,51.1082,-115.7639,1630,2730,NW,1070,107,11,5,America/Edmonton,https://www.skibanff.com
+Nakiska,nakiska,CA,Rocky Mountains,Alberta,50.9419,-115.1544,1530,2258,S,728,79,11,4,America/Edmonton,https://www.skinakiska.com
+Castle Mountain,castle-mountain-ab,CA,Rocky Mountains,Alberta,49.3332,-114.4113,1401,2272,N,899,94,11,4,America/Edmonton,https://www.skicastle.ca
+Mont-Tremblant,mont-tremblant,CA,Northeast,Quebec,46.2147,-74.5994,228,876,SE,645,102,11,4,America/Toronto,https://www.tremblant.ca
+Le Massif de Charlevoix,le-massif-de-charlevoix,CA,Northeast,Quebec,47.3985,-70.6736,3,771,NE,771,52,11,4,America/Toronto,https://www.lemassif.com
+Blue Mountain Ontario,blue-mountain-on,CA,Northeast,Ontario,44.5008,-80.3153,222,558,N,216,42,11,3,America/Toronto,https://www.bluemountain.ca
+Marble Mountain,marble-mountain,CA,Northeast,Newfoundland,48.9650,-57.8956,107,518,SW,411,36,11,4,America/St_Johns,https://www.skimarble.com
+Niseko United,niseko-united,JP,Hokkaido,Niseko Area,42.8048,140.6887,253,1308,N,1055,61,11,4,Asia/Tokyo,https://www.niseko.ne.jp
+Furano,furano,JP,Hokkaido,Central Hokkaido,43.3448,142.3859,250,1070,N,820,28,11,4,Asia/Tokyo,https://www.princehotels.com/ski/furano
+Rusutsu,rusutsu,JP,Hokkaido,Niseko Area,42.7452,140.9128,300,994,N,694,37,11,4,Asia/Tokyo,https://www.rusutsu.com
+Kiroro,kiroro,JP,Hokkaido,Sapporo Area,43.1370,141.0530,746,1180,N,434,26,11,4,Asia/Tokyo,https://www.kiroro.co.jp
+Tomamu,tomamu,JP,Hokkaido,Central Hokkaido,43.0406,142.6059,600,1239,N,639,26,11,4,Asia/Tokyo,https://www.hoshino-resorts.com/tomamu
+Sapporo Teine,sapporo-teine,JP,Hokkaido,Sapporo Area,43.1330,141.1640,210,1023,N,680,13,11,4,Asia/Tokyo,https://www.sapporo-teine.com
+Hakuba Valley,hakuba-valley,JP,Nagano,Hakuba Area,36.6977,137.8612,760,1831,N,1071,219,11,4,Asia/Tokyo,https://www.hakubavalley.com
+Shiga Kogen,shiga-kogen,JP,Nagano,Shiga Kogen,36.7962,138.5146,1350,2307,N,957,80,11,4,Asia/Tokyo,https://www.shigakogen-ski.com
+Madarao,madarao,JP,Nagano,Northern Nagano,36.9773,138.3742,940,1382,N,442,26,11,4,Asia/Tokyo,https://www.madarao.jp
+Hakuba Goryu,hakuba-goryu,JP,Nagano,Hakuba Area,36.6860,137.9200,820,1676,N,856,20,11,4,Asia/Tokyo,https://www.goryu.or.jp
+GALA Yuzawa,gala-yuzawa,JP,Niigata,Yuzawa,36.9277,138.8271,300,800,N,530,19,12,3,Asia/Tokyo,https://www.gala.co.jp
+Naeba,naeba,JP,Niigata,Yuzawa,36.9226,138.7207,900,1789,N,889,27,11,4,Asia/Tokyo,https://www.princehotels.com/naeba
+Myoko Kogen,myoko-kogen,JP,Niigata,Myoko,36.9285,138.1139,666,1855,N,1189,40,11,4,Asia/Tokyo,https://www.myoko.tv
+Zao Onsen,zao-onsen,JP,Tohoku,Yamagata,38.1470,140.3980,730,1661,W,931,43,11,4,Asia/Tokyo,https://www.zao-ski.or.jp
+Nozawa Onsen,nozawa-onsen,JP,Nagano,Northern Nagano,36.9260,138.4501,570,1650,N,1080,33,11,4,Asia/Tokyo,https://www.nozawa-onsen.com
+Hakkoda,hakkoda,JP,Tohoku,Aomori,40.6567,140.8856,390,1584,N,800,8,12,4,Asia/Tokyo,https://www.hakkoda-ropeway.jp
+Chamonix,chamonix,FR,Alps,France,45.9237,6.8694,1035,3842,N,2807,47,12,4,Europe/Paris,https://www.chamonix.com
+Val d'Isere,val-disere,FR,Alps,France,45.4481,6.9802,1785,3456,N,1671,300,11,5,Europe/Paris,https://www.valdisere.com
+Courchevel,courchevel,FR,Alps,France,45.4141,6.6338,1300,2738,S,1438,150,12,4,Europe/Paris,https://www.courchevel.com
+Meribel,meribel,FR,Alps,France,45.3921,6.5613,1400,2952,NW,1552,160,12,4,Europe/Paris,https://www.meribel.net
+Val Thorens,val-thorens,FR,Alps,France,45.2978,6.5831,2300,3230,NW,930,150,11,5,Europe/Paris,https://www.valthorens.com
+Les Deux Alpes,les-deux-alpes,FR,Alps,France,45.0140,6.1194,1650,3600,NW,1950,228,12,4,Europe/Paris,https://www.les2alpes.com
+Alpe d'Huez,alpe-dhuez,FR,Alps,France,45.0900,6.0694,1110,3330,N,2253,110,12,4,Europe/Paris,https://www.alpedhuez.com
+La Plagne,la-plagne,FR,Alps,France,45.5077,6.6777,1250,3250,NE,2000,130,12,4,Europe/Paris,https://www.la-plagne.com
+Tignes,tignes,FR,Alps,France,45.4706,6.9009,1550,3456,N,1906,154,10,5,Europe/Paris,https://www.tignes.net
+Avoriaz,avoriaz,FR,Alps,France,46.1908,6.7791,1800,2277,NW,1025,48,12,4,Europe/Paris,https://www.avoriaz.com
+Morzine,morzine,FR,Alps,France,46.1790,6.7095,1000,2460,S,1460,52,12,4,Europe/Paris,https://www.morzine.com
+La Clusaz,la-clusaz,FR,Alps,France,45.9067,6.4244,1100,2616,N,1516,132,12,4,Europe/Paris,https://www.laclusaz.com
+Megeve,megeve,FR,Alps,France,45.8574,6.6168,1100,2350,N,1250,325,12,4,Europe/Paris,https://www.megeve.com
+Flaine,flaine,FR,Alps,France,46.0049,6.6779,1600,2480,N,1600,78,12,4,Europe/Paris,https://www.flaine.com
+Les Arcs,les-arcs,FR,Alps,France,45.5590,6.8168,1200,3226,N,1981,200,12,4,Europe/Paris,https://www.lesarcs.com
+Serre Chevalier,serre-chevalier,FR,Alps,France,44.8894,6.5535,1200,2800,NE,1600,250,11,4,Europe/Paris,https://www.serre-chevalier.com
+St. Anton am Arlberg,st-anton-am-arlberg,AT,Alps,Austria,47.1295,10.2683,1304,2811,N,1507,260,11,4,Europe/Vienna,https://www.stantonamarlberg.com
+Kitzbuhel,kitzbuhel,AT,Alps,Austria,47.4464,12.3917,762,2000,S,1262,170,11,4,Europe/Vienna,https://www.kitzbuehel.com
+Mayrhofen,mayrhofen,AT,Alps,Austria,47.1677,11.8682,630,2500,N,1870,159,11,4,Europe/Vienna,https://www.mayrhofen.at
+Solden,solden,AT,Alps,Austria,46.9694,11.0039,1368,3340,S,1972,148,10,5,Europe/Vienna,https://www.soelden.com
+Lech Zurs,lech-zurs,AT,Alps,Austria,47.2095,10.1419,1450,2811,N,1361,87,11,4,Europe/Vienna,https://www.lech-zuers.at
+Ischgl,ischgl,AT,Alps,Austria,47.0138,10.2935,1377,2872,N,1450,238,11,4,Europe/Vienna,https://www.ischgl.com
+Saalbach-Hinterglemm,saalbach-hinterglemm,AT,Alps,Austria,47.3893,12.6359,1003,2096,S,1093,200,11,4,Europe/Vienna,https://www.saalbach.com
+Zell am See,zell-am-see,AT,Alps,Austria,47.3257,12.7981,757,2000,N,1243,77,11,4,Europe/Vienna,https://www.zellamsee-kaprun.com
+Obertauern,obertauern,AT,Alps,Austria,47.2559,13.5638,1630,2350,N,720,100,11,4,Europe/Vienna,https://www.obertauern.com
+Schladming,schladming,AT,Alps,Austria,47.3892,13.6878,745,1906,NW,1161,82,11,4,Europe/Vienna,https://www.schladming-dachstein.at
+Zermatt,zermatt,CH,Alps,Switzerland,45.9840,7.7469,1620,3883,N,2263,360,10,5,Europe/Zurich,https://www.zermatt.ch
+Verbier,verbier,CH,Alps,Switzerland,46.0970,7.2278,1500,3330,NE,1830,200,12,4,Europe/Zurich,https://www.verbier.ch
+Saas-Fee,saas-fee,CH,Alps,Switzerland,46.1081,7.9283,1800,3600,NW,1800,150,10,6,Europe/Zurich,https://www.saas-fee.ch
+Davos-Klosters,davos-klosters,CH,Alps,Switzerland,46.7984,9.8326,1124,2844,NE,1720,320,11,4,Europe/Zurich,https://www.davos.ch
+Grindelwald,grindelwald,CH,Alps,Switzerland,46.6244,8.0418,1034,2971,N,1937,213,11,4,Europe/Zurich,https://www.grindelwald.ch
+St. Moritz,st-moritz,CH,Alps,Switzerland,46.4908,9.8355,1822,3303,SE,1481,350,11,4,Europe/Zurich,https://www.stmoritz.com
+Crans-Montana,crans-montana,CH,Alps,Switzerland,46.3026,7.4831,1500,3000,S,1500,140,12,4,Europe/Zurich,https://www.cransmontana.ch
+Andermatt,andermatt,CH,Alps,Switzerland,46.6354,8.5950,1444,3000,N,1556,80,11,4,Europe/Zurich,https://www.andermatt-sedrun.ch
+Wengen,wengen,CH,Alps,Switzerland,46.6090,7.9224,1274,2971,E,1697,35,11,4,Europe/Zurich,https://www.wengen.swiss
+Murren,murren,CH,Alps,Switzerland,46.5574,7.8940,1638,2971,NE,1333,55,11,4,Europe/Zurich,https://www.muerren.swiss
+Cortina d'Ampezzo,cortina-dampezzo,IT,Alps,Italy,46.5359,12.1390,1224,2930,SW,1706,140,12,3,Europe/Rome,https://www.dolomiti.org
+Courmayeur,courmayeur,IT,Alps,Italy,45.7924,6.9716,1210,2755,E,1545,110,12,4,Europe/Rome,https://www.courmayeur.com
+Livigno,livigno,IT,Alps,Italy,46.5381,10.1364,1816,3002,NW,1186,115,11,4,Europe/Rome,https://www.livigno.eu
+Madonna di Campiglio,madonna-di-campiglio,IT,Alps,Italy,46.2326,10.8277,1522,2505,N,983,150,12,4,Europe/Rome,https://www.funiviecampiglio.it
+Sestriere,sestriere,IT,Alps,Italy,44.9596,6.8749,1350,2823,N,1473,120,11,4,Europe/Rome,https://www.vialattea.it
+Alta Badia,alta-badia,IT,Alps,Italy,46.5996,11.9201,1340,2778,NE,1438,130,12,4,Europe/Rome,https://www.altabadia.org
+Val Gardena,val-gardena,IT,Alps,Italy,46.5594,11.7775,1236,2519,S,1283,175,12,4,Europe/Rome,https://www.valgardena.it
+Cervinia,cervinia,IT,Alps,Italy,45.9285,7.6313,2050,3883,SE,1830,60,10,5,Europe/Rome,https://www.cervinia.it
+La Thuile,la-thuile,IT,Alps,Italy,45.7162,6.9640,1450,2642,SE,1192,150,12,4,Europe/Rome,https://www.lathuile.it
+Garmisch-Partenkirchen,garmisch-partenkirchen,DE,Alps,Germany,47.4949,11.0948,700,2830,N,2130,113,11,4,Europe/Berlin,https://www.gapa.de
+Oberstdorf,oberstdorf,DE,Alps,Germany,47.4168,10.2797,813,2224,SE,1411,74,11,4,Europe/Berlin,https://www.oberstdorf.de
+Zugspitze,zugspitze,DE,Alps,Germany,47.4211,10.9860,720,2962,N,2242,20,10,5,Europe/Berlin,https://www.zugspitze.de
+Grandvalira,grandvalira,AD,Pyrenees,Andorra,42.5420,1.7388,1710,2640,N,930,210,11,4,Europe/Andorra,https://www.grandvalira.com
+Trysil,trysil,NO,Scandinavia,Norway,61.3213,12.2645,400,1132,S,732,71,11,4,Europe/Oslo,https://www.trysil.com
+Geilo,geilo,NO,Scandinavia,Norway,60.5279,8.2012,792,1177,S,385,35,11,4,Europe/Oslo,https://www.geilo.no
+Hemsedal,hemsedal,NO,Scandinavia,Norway,60.8660,8.5540,620,1450,S,830,53,11,4,Europe/Oslo,https://www.hemsedal.com
+Kvitfjell,kvitfjell,NO,Scandinavia,Norway,61.5120,10.0940,425,1028,S,603,34,11,4,Europe/Oslo,https://www.kvitfjell.no
+Are,are,SE,Scandinavia,Sweden,63.3990,13.0805,380,1420,S,892,89,11,4,Europe/Stockholm,https://www.skistar.com/are
+Salen,salen,SE,Scandinavia,Sweden,61.1574,13.2598,365,884,S,519,107,11,4,Europe/Stockholm,https://www.skistar.com/lindvallen
+Levi,levi,FI,Scandinavia,Finland,67.7988,25.0038,175,531,S,325,45,10,4,Europe/Helsinki,https://www.levi.fi
+Ruka,ruka,FI,Scandinavia,Finland,66.1642,29.1562,193,492,S,257,38,10,4,Europe/Helsinki,https://www.ruka.fi
+Sinaia,sinaia,RO,Eastern Europe,Romania,45.3487,25.5455,800,2000,N,1200,35,11,4,Europe/Bucharest,https://www.sinaia.ro
+Poiana Brasov,poiana-brasov,RO,Eastern Europe,Romania,45.5834,25.5553,1030,1802,NE,772,16,11,4,Europe/Bucharest,https://www.poiana-brasov.ro
+Jasna,jasna,SK,Eastern Europe,Slovakia,48.9365,19.6134,949,2024,N,1075,43,11,4,Europe/Bratislava,https://www.jasna.sk
+Kranjska Gora,kranjska-gora,SI,Alps,Slovenia,46.4810,13.7830,800,1570,S,770,20,11,4,Europe/Ljubljana,https://www.kranjska-gora.si
+Baqueira-Beret,baqueira-beret,ES,Pyrenees,Spain,42.6897,0.9428,1500,2610,N,1110,92,11,4,Europe/Madrid,https://www.baqueira.es
+Sierra Nevada Spain,sierra-nevada-es,ES,Southern Spain,Spain,37.0951,-3.3987,2100,3300,SE,1200,121,11,4,Europe/Madrid,https://www.sierranevada.es
+Perisher,perisher,AU,Australian Alps,New South Wales,-36.4051,148.4090,1605,2034,SE,400,47,6,10,Australia/Sydney,https://www.perisher.com.au
+Thredbo,thredbo,AU,Australian Alps,New South Wales,-36.5033,148.2918,1365,2037,NW,672,60,6,10,Australia/Sydney,https://www.thredbo.com.au
+Falls Creek,falls-creek,AU,Australian Alps,Victoria,-36.8668,147.2845,1500,1780,W,267,92,6,10,Australia/Melbourne,https://www.fallscreek.com.au
+Mount Buller,mount-buller,AU,Australian Alps,Victoria,-37.1479,146.4367,1400,1804,W,400,80,6,10,Australia/Melbourne,https://www.mtbuller.com.au
+Charlotte Pass,charlotte-pass,AU,Australian Alps,New South Wales,-36.4474,148.3416,1760,1952,W,190,18,6,10,Australia/Sydney,https://www.charlottepass.com.au
+Coronet Peak,coronet-peak,NZ,Southern Alps,Otago,-45.0450,168.7261,1168,1649,N,481,26,6,10,Pacific/Auckland,https://www.coronetpeak.co.nz
+The Remarkables,the-remarkables,NZ,Southern Alps,Otago,-45.1059,168.8082,1601,2319,S,718,16,6,10,Pacific/Auckland,https://www.theremarkables.co.nz
+Treble Cone,treble-cone,NZ,Southern Alps,Otago,-44.6288,168.9001,1200,2088,E,700,8,6,10,Pacific/Auckland,https://www.treblecone.com
+Mount Hutt,mount-hutt,NZ,Southern Alps,Canterbury,-43.4963,171.5500,1469,2086,SW,617,25,6,10,Pacific/Auckland,https://www.mthutt.co.nz
+Las Lenas,las-lenas,AR,Andes,Mendoza,-35.1630,-70.0731,2240,3430,N,1230,42,6,10,America/Argentina/Buenos_Aires,https://www.laslenas.com
+Cerro Catedral,cerro-catedral,AR,Andes,Patagonia,-41.1663,-71.4264,1030,2388,N,1358,76,6,10,America/Argentina/Buenos_Aires,https://www.catedralaltapatagonia.com
+Valle Nevado,valle-nevado,CL,Andes,Metropolitan,-33.3581,-70.2924,2860,3670,SE,810,39,6,10,America/Santiago,https://www.vallenevado.com
+Portillo,portillo,CL,Andes,Valparaiso,-32.8338,-70.1295,2590,3310,SE,720,14,6,10,America/Santiago,https://www.skiportillo.com
+Yongpyong,yongpyong,KR,Korea,Gangwon,37.7064,128.7418,700,1458,N,759,31,11,3,Asia/Seoul,https://www.yongpyong.co.kr
+High1,high1,KR,Korea,Gangwon,37.1900,128.7501,800,1340,N,540,19,11,3,Asia/Seoul,https://www.high1.com
+Portes du Soleil,portes-du-soleil,FR,Alps,France,46.1904,6.7795,1000,2466,SW,1466,200,12,4,Europe/Paris,https://www.portesdusoleil.com
+La Rosiere,la-rosiere,FR,Alps,France,45.6340,6.8535,1175,2642,S,1467,40,12,4,Europe/Paris,https://www.larosiere.net
+Engelberg,engelberg,CH,Alps,Switzerland,46.8213,8.4070,1050,3020,NE,1970,45,11,4,Europe/Zurich,https://www.engelberg.ch
+Arosa Lenzerheide,arosa-lenzerheide,CH,Alps,Switzerland,46.7874,9.6777,1230,2865,SW,1635,225,11,4,Europe/Zurich,https://www.arosalenzerheide.swiss
+Bad Gastein,bad-gastein,AT,Alps,Austria,47.1134,13.1332,838,2686,NE,1848,200,11,4,Europe/Vienna,https://www.gastein.com
+Jasper Marmot Basin,jasper-marmot-basin,CA,Rocky Mountains,Alberta,52.8680,-118.0539,1698,2612,NW,914,91,11,4,America/Edmonton,https://www.skimarmot.com
+Puy Saint Vincent,puy-saint-vincent,FR,Alps,France,44.8440,6.4829,1400,2750,N,1290,60,12,4,Europe/Paris,https://www.puysaintvincent.com
+Arabba,arabba,IT,Alps,Italy,46.4989,11.8762,1600,2950,N,1350,68,12,4,Europe/Rome,https://www.arabba.it
+Hinterstoder,hinterstoder,AT,Alps,Austria,47.6907,14.1505,600,1860,SW,1260,45,11,4,Europe/Vienna,https://www.hinterstoder.at
+Pizol,pizol,CH,Alps,Switzerland,46.9857,9.3957,1227,2844,SE,1617,30,11,4,Europe/Zurich,https://www.pizol.com
+Bansko,bansko,BG,Eastern Europe,Bulgaria,41.8619,23.4907,990,2600,N,1610,75,11,4,Europe/Sofia,https://www.banskoski.com
+Borovets,borovets,BG,Eastern Europe,Bulgaria,42.2622,23.5896,1350,2550,N,1200,35,11,4,Europe/Sofia,https://www.borovets-bg.com
