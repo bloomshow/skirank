@@ -6,6 +6,7 @@ import uuid
 from pathlib import Path
 
 from fastapi import APIRouter, BackgroundTasks, Header, HTTPException
+from pydantic import BaseModel
 from sqlalchemy import select, update, func, and_
 from sqlalchemy.dialects.postgresql import insert as pg_insert
 
@@ -225,12 +226,12 @@ async def set_hierarchy(x_admin_key: str = Header(...)):
 
 @router.get("/quality-report")
 async def quality_report(x_admin_key: str = Header(...)):
-    """Data quality summary and list of flagged resorts."""
+    """Data quality summary, flagged resorts, and active overrides."""
     _require_key(x_admin_key)
 
     from collections import Counter
     from backend.models.weather import WeatherSnapshot
-    from backend.models.resort import Resort
+    from backend.models.overrides import ResortDepthOverride
 
     async with AsyncSessionLocal() as db:
         # Most recent snapshot per resort
@@ -241,11 +242,14 @@ async def quality_report(x_admin_key: str = Header(...)):
         )
         result = await db.execute(
             select(
+                Resort.id,
                 Resort.name,
                 Resort.slug,
+                Resort.website_url,
                 WeatherSnapshot.data_quality,
                 WeatherSnapshot.quality_flags,
                 WeatherSnapshot.fetched_at,
+                WeatherSnapshot.snow_depth_cm,
             )
             .join(snap_subq, Resort.id == snap_subq.c.resort_id)
             .join(
@@ -259,25 +263,135 @@ async def quality_report(x_admin_key: str = Header(...)):
         )
         rows = result.all()
 
+        # Active overrides keyed by resort_id
+        ov_result = await db.execute(
+            select(ResortDepthOverride).where(ResortDepthOverride.is_active == True)
+        )
+        active_overrides = {str(row.resort_id): row for row in ov_result.scalars().all()}
+
         last_run_result = await db.execute(select(func.max(WeatherSnapshot.fetched_at)))
         last_pipeline_run = last_run_result.scalar_one_or_none()
 
     quality_counts = Counter(row.data_quality or "good" for row in rows)
-    flagged = [
+
+    def _override_info(resort_id):
+        ov = active_overrides.get(str(resort_id))
+        if not ov:
+            return None
+        return {
+            "depth_cm": float(ov.override_depth_cm),
+            "reason": ov.override_reason or "",
+            "set_at": ov.override_set_at.isoformat() if ov.override_set_at else None,
+            "cumulative_new_snow_cm": float(ov.cumulative_new_snow_since_cm or 0),
+            "threshold_cm": float(ov.new_snow_threshold_cm or 20),
+        }
+
+    flagged_resorts = [
         {
             "name": row.name,
             "slug": row.slug,
+            "website_url": row.website_url,
             "quality": row.data_quality or "good",
             "flags": row.quality_flags or [],
+            "current_depth_cm": float(row.snow_depth_cm) if row.snow_depth_cm is not None else None,
             "last_updated": row.fetched_at.isoformat() if row.fetched_at else None,
+            "override": _override_info(row.id),
         }
         for row in rows
         if (row.data_quality or "good") in ("suspect", "unreliable", "stale")
     ]
 
+    overridden_resorts = [
+        {
+            "name": row.name,
+            "slug": row.slug,
+            "website_url": row.website_url,
+            "quality": row.data_quality or "good",
+            "flags": row.quality_flags or [],
+            "current_depth_cm": float(row.snow_depth_cm) if row.snow_depth_cm is not None else None,
+            "last_updated": row.fetched_at.isoformat() if row.fetched_at else None,
+            "override": _override_info(row.id),
+        }
+        for row in rows
+        if str(row.id) in active_overrides
+        and (row.data_quality or "good") not in ("suspect", "unreliable", "stale")
+    ]
+
     return {
         "quality_summary": dict(quality_counts),
         "total_resorts": len(rows),
-        "flagged_resorts": sorted(flagged, key=lambda x: x["quality"]),
+        "flagged_resorts": sorted(flagged_resorts, key=lambda x: x["name"]),
+        "overridden_resorts": overridden_resorts,
         "last_pipeline_run": last_pipeline_run.isoformat() if last_pipeline_run else None,
     }
+
+
+class OverrideRequest(BaseModel):
+    resort_slug: str
+    depth_cm: float
+    reason: str = ""
+    threshold_cm: float = 20.0
+
+
+@router.post("/set-override")
+async def set_override(body: OverrideRequest, x_admin_key: str = Header(...)):
+    """Manually set base depth for a resort. Persists until new_snow_threshold_cm is exceeded."""
+    _require_key(x_admin_key)
+    from datetime import timezone
+    from backend.models.overrides import ResortDepthOverride
+
+    async with AsyncSessionLocal() as db:
+        resort_result = await db.execute(select(Resort.id).where(Resort.slug == body.resort_slug))
+        resort_id = resort_result.scalar_one_or_none()
+        if resort_id is None:
+            raise HTTPException(status_code=404, detail=f"Resort '{body.resort_slug}' not found")
+
+        stmt = pg_insert(ResortDepthOverride).values(
+            id=uuid.uuid4(),
+            resort_id=resort_id,
+            override_depth_cm=body.depth_cm,
+            override_reason=body.reason or None,
+            override_set_at=__import__("datetime").datetime.now(timezone.utc),
+            cumulative_new_snow_since_cm=0.0,
+            new_snow_threshold_cm=body.threshold_cm,
+            is_active=True,
+        ).on_conflict_do_update(
+            index_elements=["resort_id"],
+            set_={
+                "override_depth_cm": body.depth_cm,
+                "override_reason": body.reason or None,
+                "override_set_at": __import__("datetime").datetime.now(timezone.utc),
+                "cumulative_new_snow_since_cm": 0.0,
+                "new_snow_threshold_cm": body.threshold_cm,
+                "is_active": True,
+            },
+        )
+        await db.execute(stmt)
+        await db.commit()
+
+    return {
+        "status": "ok",
+        "message": f"Override set for {body.resort_slug}: {body.depth_cm}cm (expires after {body.threshold_cm}cm new snow)",
+    }
+
+
+@router.delete("/clear-override/{resort_slug}")
+async def clear_override(resort_slug: str, x_admin_key: str = Header(...)):
+    """Remove manual depth override for a resort."""
+    _require_key(x_admin_key)
+    from backend.models.overrides import ResortDepthOverride
+
+    async with AsyncSessionLocal() as db:
+        resort_result = await db.execute(select(Resort.id).where(Resort.slug == resort_slug))
+        resort_id = resort_result.scalar_one_or_none()
+        if resort_id is None:
+            raise HTTPException(status_code=404, detail=f"Resort '{resort_slug}' not found")
+
+        await db.execute(
+            update(ResortDepthOverride)
+            .where(ResortDepthOverride.resort_id == resort_id)
+            .values(is_active=False)
+        )
+        await db.commit()
+
+    return {"status": "ok", "message": f"Override cleared for {resort_slug}"}

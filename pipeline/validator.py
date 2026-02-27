@@ -127,7 +127,11 @@ def score_data_quality(
     flags = [reason for ok, reason in validation_results if not ok and reason]
     n = len(flags)
     if n == 0:
-        quality = DataQuality.VERIFIED if depth_source == "synoptic_station" else DataQuality.GOOD
+        # Both station-verified and manually-overridden data get VERIFIED tier
+        if depth_source in ("synoptic_station", "manual_override"):
+            quality = DataQuality.VERIFIED
+        else:
+            quality = DataQuality.GOOD
     elif n == 1:
         quality = DataQuality.SUSPECT
     else:
@@ -183,6 +187,7 @@ def run_validation(
         validate_cross_source(
             depth_cm if depth_source == "synoptic_station" else None,
             openmeteo_depth_cm if depth_source == "synoptic_station" else None,
+            # manual_override skips cross-source check — human has verified the value
         ),
         validate_temp_depth_consistency(depth_cm, avg_temp_c),
     ]

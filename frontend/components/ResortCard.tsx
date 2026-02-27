@@ -94,6 +94,17 @@ function QualityBadge({ dq }: { dq: DataQualityInfo | null | undefined }) {
     );
   }
 
+  if (dq.depth_source === "manual_override") {
+    return (
+      <span
+        title="Base depth manually verified by admin. Will auto-expire after significant new snow."
+        className="text-xs bg-blue-50 text-blue-600 px-2 py-0.5 rounded-full"
+      >
+        📝 Verified
+      </span>
+    );
+  }
+
   if (dq.depth_source === "synoptic_station") {
     return (
       <span

@@ -115,6 +115,52 @@ async def run_pipeline() -> None:
                 station_readings[slug].data_date,
             )
 
+    # Apply manual depth overrides — takes precedence over station data
+    from sqlalchemy import update as _update
+    from backend.models.overrides import ResortDepthOverride
+
+    async with SessionLocal() as session:
+        ov_result = await session.execute(
+            select(ResortDepthOverride).where(ResortDepthOverride.is_active == True)
+        )
+        active_overrides = {str(row.resort_id): row for row in ov_result.scalars().all()}
+
+    override_updates: list[dict] = []
+    for weather in weather_results:
+        override = active_overrides.get(weather.resort_id)
+        if not override:
+            continue
+        new_cumulative = float(override.cumulative_new_snow_since_cm or 0) + (weather.new_snow_24h_cm or 0)
+        threshold = float(override.new_snow_threshold_cm or 20)
+        if new_cumulative >= threshold:
+            # Significant new snow — expire the override, use live data
+            override_updates.append({"id": override.id, "is_active": False, "cumulative": new_cumulative})
+            slug = resort_meta_map.get(weather.resort_id, {}).get("slug", weather.resort_id)
+            logger.info(
+                "Manual override expired for %s: %.1fcm cumulative new snow >= %.1fcm threshold",
+                slug, new_cumulative, threshold,
+            )
+        else:
+            # Override still valid — use override depth
+            weather.snow_depth_cm = float(override.override_depth_cm)
+            weather.depth_source = "manual_override"
+            override_updates.append({"id": override.id, "is_active": True, "cumulative": new_cumulative})
+            slug = resort_meta_map.get(weather.resort_id, {}).get("slug", weather.resort_id)
+            logger.info(
+                "Applied manual override for %s: %.1fcm (%.1fcm/%.1fcm new snow accumulated)",
+                slug, override.override_depth_cm, new_cumulative, threshold,
+            )
+
+    if override_updates:
+        async with SessionLocal() as session:
+            for u in override_updates:
+                await session.execute(
+                    _update(ResortDepthOverride)
+                    .where(ResortDepthOverride.id == u["id"])
+                    .values(cumulative_new_snow_since_cm=u["cumulative"], is_active=u["is_active"])
+                )
+            await session.commit()
+
     # Run data quality validation for each resort
     for weather in weather_results:
         resort = resort_meta_map.get(weather.resort_id, {})
