@@ -102,7 +102,8 @@ function formatDateRange(start: string | null, end: string | null): string {
 // ---------------------------------------------------------------------------
 
 export default async function ResortDetailPage({ params }: Props) {
-  let data: ResortDetailFull;
+  // eslint-disable-next-line prefer-const
+  let data: ResortDetailFull = null!;
   try {
     data = await fetchResort(params.slug);
   } catch {
