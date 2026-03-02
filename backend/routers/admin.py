@@ -114,9 +114,28 @@ async def run_migrate(x_admin_key: str = Header(...)):
         "ALTER TABLE weather_snapshots ADD COLUMN IF NOT EXISTS quality_flags JSONB DEFAULT '[]'",
         "ALTER TABLE weather_snapshots ADD COLUMN IF NOT EXISTS previous_depth_cm DECIMAL(6,1)",
     ]
+    # v1.6 — create resort_summaries table (CREATE TABLE IF NOT EXISTS)
+    create_stmts = [
+        """CREATE TABLE IF NOT EXISTS resort_summaries (
+            id UUID PRIMARY KEY,
+            resort_id UUID NOT NULL REFERENCES resorts(id) ON DELETE CASCADE,
+            valid_date DATE NOT NULL,
+            headline VARCHAR(200),
+            summary_today TEXT,
+            summary_3d TEXT,
+            summary_7d TEXT,
+            summary_14d TEXT,
+            generated_at TIMESTAMPTZ NOT NULL,
+            model_version VARCHAR(50),
+            UNIQUE(resort_id, valid_date)
+        )""",
+        "CREATE INDEX IF NOT EXISTS idx_resort_summaries_resort_date ON resort_summaries(resort_id, valid_date DESC)",
+    ]
     from sqlalchemy import text
     async with AsyncSessionLocal() as db:
         for stmt in alter_stmts:
+            await db.execute(text(stmt))
+        for stmt in create_stmts:
             await db.execute(text(stmt))
         await db.commit()
 

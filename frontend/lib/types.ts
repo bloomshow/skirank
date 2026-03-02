@@ -101,6 +101,62 @@ export interface ResortDetail {
   forecast: ForecastDay[];
 }
 
+// v1.6 — Resort detail page types
+export interface SummaryInfo {
+  headline: string;
+  today: string;
+  next_3d: string;
+  next_7d: string;
+  next_14d: string;
+  generated_at: string;
+}
+
+export interface DepthPoint {
+  date: string;
+  depth_cm: number | null;
+}
+
+export interface PowderIntelligence {
+  powder_days_14d: number;
+  best_window_start: string | null;
+  best_window_end: string | null;
+  total_new_snow_7d: number;
+  total_new_snow_14d: number;
+}
+
+export interface RankingsInfo {
+  global_rank: number | null;
+  global_total: number;
+  continental_rank: number | null;
+  continental_total: number | null;
+  regional_rank: number | null;
+  regional_total: number | null;
+}
+
+export interface NearbyResort {
+  slug: string;
+  name: string;
+  country: string | null;
+  ski_region: string | null;
+  distance_km: number;
+  score: number | null;
+  snow_depth_cm: number | null;
+}
+
+export interface ResortDetailFull {
+  resort: Resort;
+  current_score: number | null;
+  sub_scores: SubScores;
+  snapshot: SnapshotSummary;
+  data_quality: DataQualityInfo | null;
+  forecast: ForecastDay[];
+  depth_history_30d: DepthPoint[];
+  powder_intelligence: PowderIntelligence;
+  rankings: RankingsInfo;
+  nearby_resorts: NearbyResort[];
+  summary: SummaryInfo | null;
+}
+
 export interface RegionEntry {
   region: string;
   subregions: string[];

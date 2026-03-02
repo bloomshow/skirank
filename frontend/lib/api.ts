@@ -2,7 +2,7 @@ import type {
   RankingsResponse,
   RankingsFilters,
   Resort,
-  ResortDetail,
+  ResortDetailFull,
   RegionEntry,
   HierarchyResponse,
   ForecastDay,
@@ -69,8 +69,8 @@ export async function fetchResorts(params?: {
   return apiFetch<Resort[]>("/resorts", params);
 }
 
-export async function fetchResort(slug: string): Promise<ResortDetail> {
-  return apiFetch<ResortDetail>(`/resorts/${slug}`);
+export async function fetchResort(slug: string): Promise<ResortDetailFull> {
+  return apiFetch<ResortDetailFull>(`/resorts/${slug}`);
 }
 
 export async function fetchResortForecast(slug: string): Promise<ForecastDay[]> {

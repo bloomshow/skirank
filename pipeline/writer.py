@@ -135,6 +135,44 @@ async def write_scores(
     await session.commit()
 
 
+async def write_summaries(
+    session: AsyncSession,
+    resort_id: str,
+    summary: dict,
+    valid_date: date,
+    generated_at: datetime,
+) -> None:
+    """Upsert an AI condition summary for a resort (one row per resort per day)."""
+    from backend.models.summaries import ResortSummary
+    from sqlalchemy.dialects.postgresql import insert as _pg_insert
+
+    resort_uuid = uuid.UUID(str(resort_id))
+    stmt = _pg_insert(ResortSummary).values(
+        id=uuid.uuid4(),
+        resort_id=resort_uuid,
+        valid_date=valid_date,
+        headline=summary.get("headline", ""),
+        summary_today=summary.get("today", ""),
+        summary_3d=summary.get("next_3d", ""),
+        summary_7d=summary.get("next_7d", ""),
+        summary_14d=summary.get("next_14d", ""),
+        generated_at=generated_at,
+        model_version="claude-sonnet-4-6",
+    ).on_conflict_do_update(
+        index_elements=["resort_id", "valid_date"],
+        set_={
+            "headline": summary.get("headline", ""),
+            "summary_today": summary.get("today", ""),
+            "summary_3d": summary.get("next_3d", ""),
+            "summary_7d": summary.get("next_7d", ""),
+            "summary_14d": summary.get("next_14d", ""),
+            "generated_at": generated_at,
+        },
+    )
+    await session.execute(stmt)
+    await session.commit()
+
+
 async def update_global_ranks(session: AsyncSession, horizon_days: int, scored_at: datetime) -> None:
     """
     Assign rank_global to the latest scores for a given horizon.

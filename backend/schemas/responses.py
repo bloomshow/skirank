@@ -150,3 +150,65 @@ class HealthResponse(BaseModel):
     status: str
     last_pipeline_run: Optional[datetime]
     resorts_count: int
+
+
+# ---------------------------------------------------------------------------
+# v1.6 — Resort detail page types
+# ---------------------------------------------------------------------------
+
+class SummaryInfo(BaseModel):
+    headline: str
+    today: str
+    next_3d: str
+    next_7d: str
+    next_14d: str
+    generated_at: datetime
+
+
+class DepthPoint(BaseModel):
+    date: str          # "YYYY-MM-DD"
+    depth_cm: Optional[float]
+
+
+class PowderIntelligence(BaseModel):
+    powder_days_14d: int           # forecast days >= 10cm snowfall
+    best_window_start: Optional[str]  # "YYYY-MM-DD" of best powder window start
+    best_window_end: Optional[str]
+    total_new_snow_7d: float
+    total_new_snow_14d: float
+
+
+class RankingsInfo(BaseModel):
+    global_rank: Optional[int]
+    global_total: int
+    continental_rank: Optional[int]
+    continental_total: Optional[int]
+    regional_rank: Optional[int]
+    regional_total: Optional[int]
+
+
+class NearbyResort(BaseModel):
+    slug: str
+    name: str
+    country: Optional[str]
+    ski_region: Optional[str]
+    distance_km: float
+    score: Optional[float]
+    snow_depth_cm: Optional[float]
+
+
+class ResortDetailFull(BaseModel):
+    resort: ResortBase
+    current_score: Optional[float]
+    sub_scores: SubScores
+    snapshot: SnapshotSummary
+    data_quality: Optional[DataQualityInfo] = None
+    forecast: list[ForecastDay]
+    depth_history_30d: list[DepthPoint] = []
+    powder_intelligence: PowderIntelligence
+    rankings: RankingsInfo
+    nearby_resorts: list[NearbyResort] = []
+    summary: Optional[SummaryInfo] = None
+
+    class Config:
+        from_attributes = True

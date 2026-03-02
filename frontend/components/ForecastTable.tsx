@@ -2,6 +2,7 @@ import type { ForecastDay } from "../lib/types";
 
 interface ForecastTableProps {
   forecast: ForecastDay[];
+  highlightPowder?: boolean;
 }
 
 const WMO_LABELS: Record<number, string> = {
@@ -19,7 +20,7 @@ function wmoLabel(code: number | null): string {
   return WMO_LABELS[code] ?? `Code ${code}`;
 }
 
-export default function ForecastTable({ forecast }: ForecastTableProps) {
+export default function ForecastTable({ forecast, highlightPowder = false }: ForecastTableProps) {
   if (!forecast.length) {
     return <p className="text-sm text-slate-400">No forecast data available.</p>;
   }
@@ -38,30 +39,37 @@ export default function ForecastTable({ forecast }: ForecastTableProps) {
           </tr>
         </thead>
         <tbody>
-          {forecast.map((day) => (
-            <tr key={day.forecast_date} className="border-b border-slate-100 hover:bg-slate-50">
-              <td className="py-2 pr-4 font-medium text-slate-700">
-                {new Date(day.forecast_date).toLocaleDateString("en-GB", {
-                  weekday: "short", month: "short", day: "numeric",
-                })}
-              </td>
-              <td className="py-2 pr-4 text-blue-600 font-medium">
-                {day.snowfall_cm !== null ? `${day.snowfall_cm}cm` : "—"}
-              </td>
-              <td className="py-2 pr-4 text-slate-600">
-                {day.temperature_min_c !== null && day.temperature_max_c !== null
-                  ? `${day.temperature_min_c}° / ${day.temperature_max_c}°C`
-                  : "—"}
-              </td>
-              <td className="py-2 pr-4 text-slate-600">
-                {day.wind_speed_max_kmh !== null ? `${day.wind_speed_max_kmh} km/h` : "—"}
-              </td>
-              <td className="py-2 pr-4 text-slate-600">
-                {day.precipitation_prob_pct !== null ? `${day.precipitation_prob_pct}%` : "—"}
-              </td>
-              <td className="py-2 text-slate-500 text-xs">{wmoLabel(day.weather_code)}</td>
-            </tr>
-          ))}
+          {forecast.map((day) => {
+            const isPowder = highlightPowder && (day.snowfall_cm ?? 0) >= 10;
+            return (
+              <tr
+                key={day.forecast_date}
+                className={`border-b border-slate-100 ${isPowder ? "bg-blue-50 hover:bg-blue-100" : "hover:bg-slate-50"}`}
+              >
+                <td className="py-2 pr-4 font-medium text-slate-700">
+                  {new Date(String(day.forecast_date) + "T12:00:00").toLocaleDateString("en-GB", {
+                    weekday: "short", month: "short", day: "numeric",
+                  })}
+                  {isPowder && <span className="ml-1.5 text-blue-600">❄️</span>}
+                </td>
+                <td className={`py-2 pr-4 font-medium ${isPowder ? "text-blue-700" : "text-blue-600"}`}>
+                  {day.snowfall_cm !== null ? `${day.snowfall_cm}cm` : "—"}
+                </td>
+                <td className="py-2 pr-4 text-slate-600">
+                  {day.temperature_min_c !== null && day.temperature_max_c !== null
+                    ? `${day.temperature_min_c}° / ${day.temperature_max_c}°C`
+                    : "—"}
+                </td>
+                <td className="py-2 pr-4 text-slate-600">
+                  {day.wind_speed_max_kmh !== null ? `${day.wind_speed_max_kmh} km/h` : "—"}
+                </td>
+                <td className="py-2 pr-4 text-slate-600">
+                  {day.precipitation_prob_pct !== null ? `${day.precipitation_prob_pct}%` : "—"}
+                </td>
+                <td className="py-2 text-slate-500 text-xs">{wmoLabel(day.weather_code)}</td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     </div>

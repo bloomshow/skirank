@@ -21,7 +21,7 @@ from pipeline.scorer import (
     ForecastDay as ScorerForecastDay,
     ResortMeta,
 )
-from pipeline.writer import SessionLocal, write_weather_snapshots, write_scores, update_global_ranks
+from pipeline.writer import SessionLocal, write_weather_snapshots, write_scores, write_summaries, update_global_ranks
 
 logger = logging.getLogger(__name__)
 
@@ -243,6 +243,19 @@ async def run_pipeline() -> None:
     async with SessionLocal() as session:
         for horizon in SCORE_HORIZONS:
             await update_global_ranks(session, horizon, scored_at)
+
+    # Generate AI condition summaries (skips if ANTHROPIC_API_KEY not set)
+    from pipeline.summariser import run_summaries
+    summary_results = await run_summaries(resorts, weather_results, today)
+    if summary_results:
+        generated_at = datetime.now(timezone.utc)
+        async with SessionLocal() as session:
+            for resort_id, summary in summary_results.items():
+                try:
+                    await write_summaries(session, resort_id, summary, today, generated_at)
+                except Exception as exc:
+                    logger.error("Failed to write summary for %s: %s", resort_id, exc)
+        logger.info("Wrote %d AI summaries", len(summary_results))
 
     logger.info("Pipeline completed successfully at %s", datetime.now(timezone.utc).isoformat())
 
